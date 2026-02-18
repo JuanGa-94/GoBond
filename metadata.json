@@ -1,0 +1,7 @@
+{
+  "name": "PróximoBus Connect",
+  "description": "Plataforma de gestión de transporte interurbano con integración real de Supabase Auth y base de datos relacional.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
