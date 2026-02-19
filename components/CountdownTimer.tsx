@@ -13,17 +13,17 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ departureTime, onFinish
     const calculateTime = () => {
       const now = new Date();
       const [hours, minutes] = departureTime.split(':').map(Number);
-      
+
       const target = new Date();
       target.setHours(hours, minutes, 0, 0);
-      
+
       if (target.getTime() < now.getTime()) {
         target.setDate(target.getDate() + 1);
       }
 
       const diff = target.getTime() - now.getTime();
       setTimeLeftMs(diff);
-      
+
       if (diff <= 0 && onFinish) {
         onFinish();
       }
@@ -56,7 +56,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ departureTime, onFinish
   }, [status]);
 
   const bgClass = useMemo(() => {
-    if (status === 'safe') return 'bg-primary/5 dark:bg-primary/10 border-primary/10';
+    if (status === 'safe') return 'bg-primary-muted border-primary/10';
     if (status === 'warning') return 'bg-orange-500/5 dark:bg-orange-500/10 border-orange-500/10';
     return 'bg-red-500/5 dark:bg-red-500/10 border-red-500/20';
   }, [status]);

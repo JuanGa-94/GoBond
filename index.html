@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GoBond! - ¡Los horarios que necesitás, en un solo lugar!</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Outfit:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
@@ -16,15 +19,21 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#2f7f33",
-                        "background-light": "#f6f8f6",
-                        "background-dark": "#141e15",
-                        "surface-variant": "#e1e5df",
+                        "text": "var(--text)",
+                        "background": "var(--background)",
+                        "primary": "var(--primary)",
+                        "secondary": "var(--secondary)",
+                        "accent": "var(--accent)",
+                        "surface": "var(--surface)",
+                        "surface-variant": "var(--surface-variant)",
+                        "border-subtle": "var(--border-subtle)",
+                        "primary-muted": "var(--primary-muted)",
                         "alert-yellow": "#fef9c3",
                         "alert-border": "#fde047"
                     },
                     fontFamily: {
-                        "display": ["Inter", "sans-serif"]
+                        "display": ["Dongle", "sans-serif"],
+                        "body": ["Outfit", "sans-serif"]
                     },
                     borderRadius: {
                         "lg": "1rem",
@@ -41,7 +50,20 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Dongle', sans-serif;
+            line-height: 0.8;
+            text-transform: uppercase;
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -96,8 +118,7 @@
     <link rel="stylesheet" href="/index.css">
 </head>
 
-<body
-    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<body class="bg-background text-text transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>

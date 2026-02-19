@@ -478,13 +478,13 @@ const App: React.FC = () => {
           <button onClick={() => setSelectedAd(null)} className="flex items-center gap-2 text-primary font-bold hover:translate-x-[-4px] transition-all">
             <span className="material-symbols-outlined">arrow_back</span> Regresar
           </button>
-          <div className="bg-white dark:bg-slate-900 rounded-[3rem] overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-800 transition-colors">
+          <div className="bg-surface rounded-[3rem] overflow-hidden shadow-2xl border border-border-subtle transition-colors">
             <img src={selectedAd.image_url} className="w-full h-[400px] object-cover" alt={selectedAd.title} />
             <div className="p-10 space-y-6">
-              <h1 className="text-4xl font-black dark:text-white">{selectedAd.title}</h1>
-              <p className="text-slate-500 dark:text-slate-400 font-medium text-lg leading-relaxed">{selectedAd.description}</p>
+              <h1 className="text-4xl font-bold">{selectedAd.title}</h1>
+              <p className="text-text/70 font-medium text-lg leading-relaxed">{selectedAd.description}</p>
               <div className="pt-6">
-                <a href={selectedAd.external_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-xl hover:scale-105 transition-all">
+                <a href={selectedAd.external_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-5 bg-primary text-background font-bold rounded-2xl shadow-xl hover:scale-105 transition-all">
                   VISITAR SITIO <span className="material-symbols-outlined">open_in_new</span>
                 </a>
               </div>
@@ -497,14 +497,14 @@ const App: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-background-light dark:bg-background-dark transition-colors">
-        <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-10 border border-slate-100 dark:border-slate-800 animate-slide-up transition-colors">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-background transition-colors">
+        <div className="w-full max-w-md bg-surface rounded-[2.5rem] shadow-2xl p-10 border border-border-subtle animate-slide-up transition-colors">
           <div className="flex flex-col items-center mb-10">
-            <div className="bg-primary p-4 rounded-2xl text-white mb-6 shadow-xl">
+            <div className="bg-primary p-4 rounded-2xl text-background mb-6 shadow-xl">
               <span className="material-symbols-outlined text-4xl">directions_bus</span>
             </div>
-            <h1 className="text-3xl font-black tracking-tight dark:text-white mb-2">GoBond!</h1>
-            <p className="text-slate-400 font-medium">¡Los horarios que necesitás, en un solo lugar!</p>
+            <h1 className="text-3xl font-bold tracking-tight mb-2">GoBond!</h1>
+            <p className="text-text/60 font-medium">¡Los horarios que necesitás, en un solo lugar!</p>
           </div>
 
           {authError && (
@@ -515,28 +515,28 @@ const App: React.FC = () => {
 
           {authView === 'landing' ? (
             <div className="space-y-4">
-              <button onClick={() => setAuthView('login')} className="w-full py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-lg">Iniciar Sesión</button>
+              <button onClick={() => setAuthView('login')} className="w-full py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-lg">Iniciar Sesión</button>
               <button onClick={() => setAuthView('register')} className="w-full py-4 border-2 border-primary text-primary font-black rounded-2xl hover:bg-primary/5 transition-all">Registrarse</button>
             </div>
           ) : authView === 'login' ? (
             <form onSubmit={handleLogin} className="space-y-6 animate-fade-in">
               <div className="space-y-4">
-                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-2 focus:ring-primary dark:text-white font-medium" placeholder="Correo electrónico" />
-                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-2 focus:ring-primary dark:text-white font-medium" placeholder="Contraseña" />
+                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Correo electrónico" />
+                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Contraseña" />
               </div>
-              <button type="submit" className="w-full py-4 bg-primary text-white font-black rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all">ACCEDER</button>
-              <button type="button" onClick={() => setAuthView('landing')} className="w-full py-2 text-slate-400 font-bold text-sm hover:text-slate-600 transition-colors">Regresar</button>
+              <button type="submit" className="w-full py-4 bg-primary text-background font-bold rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all">ACCEDER</button>
+              <button type="button" onClick={() => setAuthView('landing')} className="w-full py-2 text-text/40 font-bold text-sm hover:text-text transition-colors">Regresar</button>
             </form>
           ) : (
             <form onSubmit={handleRegister} className="space-y-6 animate-fade-in">
               <div className="space-y-4">
-                <input type="text" required value={authForm.name} onChange={e => setAuthForm({ ...authForm, name: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-2 focus:ring-primary dark:text-white font-medium" placeholder="Nombre completo" />
-                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-2 focus:ring-primary dark:text-white font-medium" placeholder="Email" />
-                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-2 focus:ring-primary dark:text-white font-medium" placeholder="Contraseña" />
-                <input type="password" required value={authForm.confirmPassword} onChange={e => setAuthForm({ ...authForm, confirmPassword: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border-none outline-none focus:ring-2 focus:ring-primary dark:text-white font-medium" placeholder="Confirmar contraseña" />
+                <input type="text" required value={authForm.name} onChange={e => setAuthForm({ ...authForm, name: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Nombre completo" />
+                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Email" />
+                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Contraseña" />
+                <input type="password" required value={authForm.confirmPassword} onChange={e => setAuthForm({ ...authForm, confirmPassword: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Confirmar contraseña" />
               </div>
-              <button type="submit" className="w-full py-4 bg-primary text-white font-black rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all">REGISTRARSE</button>
-              <button type="button" onClick={() => setAuthView('landing')} className="w-full py-2 text-slate-400 font-bold text-sm hover:text-slate-600 transition-colors">Regresar</button>
+              <button type="submit" className="w-full py-4 bg-primary text-background font-bold rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all">REGISTRARSE</button>
+              <button type="button" onClick={() => setAuthView('landing')} className="w-full py-2 text-text/40 font-bold text-sm hover:text-text transition-colors">Regresar</button>
             </form>
           )}
         </div>
@@ -549,40 +549,40 @@ const App: React.FC = () => {
 
       {/* Modal Selection Detail */}
       {pendingSchedule && (
-        <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-t-[2.5rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden transition-colors">
+        <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6 bg-text/60 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-lg bg-surface rounded-t-[2.5rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden transition-colors">
             <div className="p-8 space-y-8">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase text-primary tracking-widest">{pendingSchedule.route.company}</p>
-                  <h3 className="text-2xl font-black dark:text-white">{pendingSchedule.route.route_name}</h3>
+                  <p className="text-[10px] font-bold uppercase text-primary tracking-widest">{pendingSchedule.route.company}</p>
+                  <h3 className="text-2xl font-bold">{pendingSchedule.route.route_name}</h3>
                 </div>
-                <button onClick={() => setPendingSchedule(null)} className="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all"><span className="material-symbols-outlined">close</span></button>
+                <button onClick={() => setPendingSchedule(null)} className="size-10 rounded-full bg-surface-variant flex items-center justify-center text-text/40 hover:text-text/60 transition-all"><span className="material-symbols-outlined">close</span></button>
               </div>
 
-              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 bg-background p-6 rounded-2xl border border-border-subtle">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Salida</p>
-                  <p className="text-2xl font-black text-primary">{pendingSchedule.departure_time}</p>
+                  <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Salida</p>
+                  <p className="text-2xl font-bold text-primary">{pendingSchedule.departure_time}</p>
                 </div>
                 <span className="material-symbols-outlined text-primary/30">east</span>
                 <div className="space-y-1 text-right">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Arribo</p>
-                  <p className="text-2xl font-black text-primary/60">{pendingSchedule.arrival_time}</p>
+                  <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Arribo</p>
+                  <p className="text-2xl font-bold text-primary/60">{pendingSchedule.arrival_time}</p>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl">
+              <div className="flex justify-between items-center bg-background p-4 rounded-xl">
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Precio</p>
-                  <p className="text-xl font-black dark:text-white">{formatCurrency(pendingSchedule.route.price)}</p>
+                  <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Precio</p>
+                  <p className="text-xl font-bold">{formatCurrency(pendingSchedule.route.price)}</p>
                 </div>
                 {pendingSchedule.route.payment_methods?.length > 0 && (
                   <div className="text-right space-y-2">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pagos aceptados</p>
+                    <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Pagos aceptados</p>
                     <div className="flex flex-wrap justify-end gap-1">
                       {pendingSchedule.route.payment_methods.map(pm => (
-                        <span key={pm} className="px-2 py-0.5 bg-primary/10 text-primary text-[8px] font-black rounded-full uppercase tracking-tighter border border-primary/20">
+                        <span key={pm} className="px-2 py-0.5 bg-primary/10 text-primary text-[8px] font-bold rounded-full uppercase tracking-tighter border border-primary/20">
                           {pm}
                         </span>
                       ))}
@@ -592,8 +592,8 @@ const App: React.FC = () => {
               </div>
 
               <div className="flex gap-4 pt-4">
-                <button onClick={() => setPendingSchedule(null)} className="flex-1 py-4 font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-all">Cancelar</button>
-                <button onClick={handleConfirmSelection} className="flex-[2] py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-lg flex items-center justify-center gap-2">
+                <button onClick={() => setPendingSchedule(null)} className="flex-1 py-4 font-bold text-text/50 hover:bg-surface-variant rounded-2xl transition-all">Cancelar</button>
+                <button onClick={handleConfirmSelection} className="flex-[2] py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-lg flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined">check_circle</span> CONFIRMAR
                 </button>
               </div>
@@ -615,23 +615,23 @@ const App: React.FC = () => {
                 </span>
                 Ruta activa
               </div>
-              <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-800 p-8 transition-colors">
+              <div className="bg-surface rounded-[2.5rem] shadow-xl border border-border-subtle p-8 transition-colors">
                 <div className="flex justify-between items-center mb-8">
                   <div>
-                    <h3 className="text-2xl font-black dark:text-white">{activeSelection.route.origin} → {activeSelection.route.destination}</h3>
-                    <p className="text-slate-500 font-medium">{activeSelection.route.company} • {activeSelection.route.route_name}</p>
+                    <h3 className="text-2xl font-bold">{activeSelection.route.origin} → {activeSelection.route.destination}</h3>
+                    <p className="text-text/50 font-medium">{activeSelection.route.company} • {activeSelection.route.route_name}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Salida</p>
-                    <p className="text-3xl font-black text-primary tabular-nums">{activeSelection.schedule.departure_time}</p>
+                    <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Salida</p>
+                    <p className="text-3xl font-bold text-primary tabular-nums">{activeSelection.schedule.departure_time}</p>
                   </div>
                 </div>
                 <CountdownTimer departureTime={activeSelection.schedule.departure_time} />
                 <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button onClick={handleCancelSelection} className="py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-2xl transition-all flex items-center justify-center gap-2">
+                  <button onClick={handleCancelSelection} className="py-4 bg-surface-variant text-text/60 font-bold rounded-2xl transition-all flex items-center justify-center gap-2">
                     <span className="material-symbols-outlined">cancel</span> CANCELAR
                   </button>
-                  <button onClick={handleBoardedBus} className="py-4 bg-primary text-white font-black rounded-2xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg">
+                  <button onClick={handleBoardedBus} className="py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg">
                     <span className="material-symbols-outlined">directions_bus</span> YA ESTOY EN EL BUS
                   </button>
                 </div>
@@ -640,17 +640,17 @@ const App: React.FC = () => {
           )}
 
           <section className="space-y-2">
-            <h1 className="text-4xl font-black tracking-tight dark:text-white">Hola, {user.name || 'Viajero'} !! 😊</h1>
-            <p className="text-slate-500 text-lg font-medium">Servicios interurbanos en un solo lugar</p>
+            <h1 className="text-4xl font-bold tracking-tight">Hola, {user.name || 'Viajero'} !! 😊</h1>
+            <p className="text-text/60 text-lg font-medium">Servicios interurbanos en un solo lugar</p>
           </section>
 
           {/* Quick Search transitioning to Search Tab */}
-          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 dark:border-slate-800 transition-colors">
+          <div className="bg-surface rounded-[2.5rem] p-8 shadow-2xl border border-border-subtle transition-colors">
             <div className="flex items-center gap-4 mb-6">
               <span className="material-symbols-outlined text-primary text-3xl">explore</span>
-              <h3 className="text-xl font-black dark:text-white">Buscador rápido</h3>
+              <h3 className="text-xl font-bold">Buscador rápido</h3>
             </div>
-            <button onClick={() => setActiveTab('search')} className="w-full bg-primary text-white font-black py-5 rounded-2xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 shadow-xl hover:scale-[1.01]">
+            <button onClick={() => setActiveTab('search')} className="w-full bg-primary text-background font-bold py-5 rounded-2xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 shadow-xl hover:scale-[1.01]">
               <span className="material-symbols-outlined">search</span> BUSCAR MI PRÓXIMO BUS
             </button>
           </div>
@@ -658,11 +658,11 @@ const App: React.FC = () => {
           {/* Novedades Section */}
           {news.length > 0 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-black dark:text-white px-2">Avisos del servicio</h3>
+              <h3 className="text-xl font-black px-2">Avisos del servicio</h3>
               <div className="flex flex-col gap-3">
                 {news.map(n => (
                   <div key={n.id} className="p-4 bg-alert-yellow/30 dark:bg-yellow-900/10 border-l-4 border-yellow-500 rounded-r-2xl">
-                    <p className="text-sm font-semibold dark:text-slate-200">{n.message}</p>
+                    <p className="text-sm font-semibold text-text/80">{n.message}</p>
                   </div>
                 ))}
               </div>
@@ -670,15 +670,15 @@ const App: React.FC = () => {
           )}
 
           <div className="space-y-6">
-            <h3 className="text-xl font-black dark:text-white px-2">Promociones destacadas</h3>
+            <h3 className="text-xl font-bold px-2">Promociones destacadas</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {activeAds.map(ad => (
-                <div key={ad.id} onClick={() => setSelectedAd(ad)} className="group bg-white dark:bg-slate-900 rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all cursor-pointer transition-colors">
+                <div key={ad.id} onClick={() => setSelectedAd(ad)} className="group bg-surface rounded-[2.5rem] overflow-hidden border border-border-subtle shadow-lg hover:shadow-2xl transition-all cursor-pointer">
                   <div className="relative h-48">
                     <img src={ad.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={ad.title} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div className="absolute bottom-4 left-6">
-                      <p className="text-white font-black text-lg">{ad.title}</p>
+                      <p className="text-white font-bold text-lg">{ad.title}</p>
                     </div>
                   </div>
                 </div>
@@ -693,8 +693,8 @@ const App: React.FC = () => {
         <div className="space-y-8 animate-fade-in pb-20">
           <div className="flex justify-between items-end">
             <div className="space-y-2">
-              <h2 className="text-3xl font-black dark:text-white">Buscador de Horarios</h2>
-              <p className="text-slate-500 dark:text-slate-400 font-medium">Selecciona tu trayecto para ver las frecuencias disponibles.</p>
+              <h2 className="text-3xl font-bold">Buscador de Horarios</h2>
+              <p className="text-text/50 font-medium">Selecciona tu trayecto para ver las frecuencias disponibles.</p>
             </div>
             {(searchQuery.origin || searchQuery.destination) && (
               <button
@@ -707,26 +707,26 @@ const App: React.FC = () => {
             )}
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 dark:border-slate-800 transition-colors">
+          <div className="bg-surface rounded-[2.5rem] p-8 shadow-2xl border border-border-subtle transition-colors">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-end gap-6">
               <div className="space-y-3">
-                <label className="text-xs font-black text-slate-500 uppercase tracking-wider px-1">Partida</label>
+                <label className="text-xs font-bold text-text/40 uppercase tracking-wider px-1">Partida</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none">location_on</span>
-                  <select className="w-full pl-12 pr-10 py-5 rounded-2xl bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none dark:text-white appearance-none cursor-pointer font-bold transition-colors" value={searchQuery.origin} onChange={(e) => setSearchQuery({ origin: e.target.value, destination: '' })}>
+                  <select className="w-full pl-12 pr-10 py-5 rounded-2xl bg-background focus:ring-2 focus:ring-primary outline-none text-text appearance-none cursor-pointer font-bold transition-colors" value={searchQuery.origin} onChange={(e) => setSearchQuery({ origin: e.target.value, destination: '' })}>
                     <option value="">Selecciona origen</option>
                     {uniqueOrigins.map(origin => (<option key={origin} value={origin}>{origin}</option>))}
                   </select>
                 </div>
               </div>
-              <div className="flex justify-center pb-2 text-slate-400">
+              <div className="flex justify-center pb-2 text-text/20">
                 <span className="material-symbols-outlined rotate-90 md:rotate-0">east</span>
               </div>
               <div className="space-y-3">
-                <label className="text-xs font-black text-slate-500 uppercase tracking-wider px-1">Destino</label>
+                <label className="text-xs font-bold text-text/40 uppercase tracking-wider px-1">Destino</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none">flag</span>
-                  <select disabled={!searchQuery.origin} className="w-full pl-12 pr-10 py-5 rounded-2xl focus:ring-2 focus:ring-primary outline-none appearance-none font-bold bg-slate-50 dark:bg-slate-800 dark:text-white disabled:opacity-50 transition-colors" value={searchQuery.destination} onChange={(e) => setSearchQuery({ ...searchQuery, destination: e.target.value })}>
+                  <select disabled={!searchQuery.origin} className="w-full pl-12 pr-10 py-5 rounded-2xl focus:ring-2 focus:ring-primary outline-none appearance-none font-bold bg-background text-text disabled:opacity-50 transition-colors" value={searchQuery.destination} onChange={(e) => setSearchQuery({ ...searchQuery, destination: e.target.value })}>
                     <option value="">Selecciona destino</option>
                     {availableDestinations.map(dest => (<option key={dest} value={dest}>{dest}</option>))}
                   </select>
@@ -740,20 +740,20 @@ const App: React.FC = () => {
             <div className="space-y-8 animate-slide-up">
               <div className="flex gap-2 overflow-x-auto no-scrollbar py-2">
                 {searchDays.map(d => (
-                  <button key={d.index} onClick={() => setSelectedDayIndex(d.index)} className={`shrink-0 px-8 py-4 rounded-full text-xs font-black border transition-all ${selectedDayIndex === d.index ? 'bg-primary border-primary text-white shadow-lg' : 'bg-white dark:bg-slate-900 border-slate-100 text-slate-500'}`}>{d.label}</button>
+                  <button key={d.index} onClick={() => setSelectedDayIndex(d.index)} className={`shrink-0 px-8 py-4 rounded-full text-xs font-black border transition-all ${selectedDayIndex === d.index ? 'bg-primary border-primary text-background shadow-lg' : 'bg-surface border-border-subtle text-text/50'}`}>{d.label}</button>
                 ))}
               </div>
               <div className="grid grid-cols-1 gap-4">
                 {filteredSchedules.map(item => (
-                  <div key={item.id} onClick={() => setPendingSchedule(item)} className="bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800 flex items-center justify-between group hover:shadow-2xl transition-all cursor-pointer transition-colors">
+                  <div key={item.id} onClick={() => setPendingSchedule(item)} className="bg-surface p-8 rounded-[2rem] border border-border-subtle flex items-center justify-between group hover:shadow-2xl transition-all cursor-pointer">
                     <div className="flex items-center gap-8">
-                      <div className="text-5xl font-black text-primary tabular-nums">{item.departure_time}</div>
+                      <div className="text-5xl font-bold text-primary tabular-nums">{item.departure_time}</div>
                       <div>
-                        <p className="text-xl font-black dark:text-white">{item.route.route_name}</p>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase">{item.route.company}</p>
+                        <p className="text-xl font-bold">{item.route.route_name}</p>
+                        <p className="text-[10px] text-text/40 font-bold uppercase">{item.route.company}</p>
                       </div>
                     </div>
-                    <span className="material-symbols-outlined text-4xl text-slate-200 group-hover:text-primary transition-all">chevron_right</span>
+                    <span className="material-symbols-outlined text-4xl text-text/10 group-hover:text-primary transition-all">chevron_right</span>
                   </div>
                 ))}
                 {filteredSchedules.length === 0 && (
@@ -800,30 +800,30 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 shadow-xl border border-slate-100 dark:border-slate-800 space-y-8 transition-colors">
+            <div className="bg-surface rounded-[2.5rem] p-10 shadow-xl border border-border-subtle space-y-8 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-primary text-3xl">campaign</span>
-                  <h3 className="text-xl font-black dark:text-white">Publicidad</h3>
+                  <h3 className="text-xl font-black">Publicidad</h3>
                 </div>
                 <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase">{ads.length}</span>
               </div>
               <form onSubmit={handleAddAdAdmin} className="space-y-4">
-                <input name="title" required className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Título anuncio" />
-                <input name="description" required className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Descripción breve" />
-                <input name="image_url" required className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="URL de la imagen" />
-                <button type="submit" className="w-full py-4 bg-primary text-white font-black rounded-xl hover:scale-105 transition-all">NUEVO ANUNCIO</button>
+                <input name="title" required className="w-full p-4 rounded-xl bg-surface-variant/30 text-text border-none focus:ring-2 focus:ring-primary" placeholder="Título anuncio" />
+                <input name="description" required className="w-full p-4 rounded-xl bg-surface-variant/30 text-text border-none focus:ring-2 focus:ring-primary" placeholder="Descripción breve" />
+                <input name="image_url" required className="w-full p-4 rounded-xl bg-surface-variant/30 text-text border-none focus:ring-2 focus:ring-primary" placeholder="URL de la imagen" />
+                <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-xl hover:scale-105 transition-all">NUEVO ANUNCIO</button>
               </form>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {ads.map(ad => (
-                  <div key={ad.id} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-between group transition-colors">
+                  <div key={ad.id} className="p-3 bg-background rounded-2xl flex items-center justify-between group transition-colors">
                     <div className="flex items-center gap-3 min-w-0">
                       <img src={ad.image_url} className="size-8 rounded-lg object-cover" />
-                      <p className="text-xs font-bold dark:text-slate-200 truncate">{ad.title}</p>
+                      <p className="text-xs font-bold text-text/80 truncate">{ad.title}</p>
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditAd(ad)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteAd(ad.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditAd(ad)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteAd(ad.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -833,35 +833,35 @@ const App: React.FC = () => {
 
           {/* Rutas y Frecuencias Management */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-10 shadow-xl space-y-8 transition-colors">
+            <div className="bg-surface rounded-[2.5rem] border border-border-subtle p-10 shadow-xl space-y-8 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-primary text-3xl">{editingRouteId ? 'edit_road' : 'add_road'}</span>
-                  <h3 className="text-xl font-black dark:text-white">{editingRouteId ? 'Editar Ruta' : 'Ruta'}</h3>
+                  <h3 className="text-xl font-black">{editingRouteId ? 'Editar Ruta' : 'Ruta'}</h3>
                 </div>
                 {editingRouteId && (
-                  <button onClick={cancelEditRoute} className="text-xs font-black text-slate-400 hover:text-primary transition-colors flex items-center gap-1">
+                  <button onClick={cancelEditRoute} className="text-xs font-black text-text/40 hover:text-primary transition-colors flex items-center gap-1">
                     <span className="material-symbols-outlined text-sm">cancel</span> CANCELAR
                   </button>
                 )}
               </div>
               <form onSubmit={handleAddRoute} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
-                  <input required value={routeForm.origin} onChange={e => setRouteForm({ ...routeForm, origin: e.target.value })} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Origen" />
-                  <input required value={routeForm.destination} onChange={e => setRouteForm({ ...routeForm, destination: e.target.value })} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Destino" />
+                  <input required value={routeForm.origin} onChange={e => setRouteForm({ ...routeForm, origin: e.target.value })} className="p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Origen" />
+                  <input required value={routeForm.destination} onChange={e => setRouteForm({ ...routeForm, destination: e.target.value })} className="p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Destino" />
                 </div>
-                <select required value={routeForm.company} onChange={e => setRouteForm({ ...routeForm, company: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary">
+                <select required value={routeForm.company} onChange={e => setRouteForm({ ...routeForm, company: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary cursor-pointer">
                   <option value="">Seleccionar Empresa</option>
                   {companies.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                 </select>
-                <input required value={routeForm.route_name} onChange={e => setRouteForm({ ...routeForm, route_name: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Ruta..." />
-                <input type="number" step="0.01" required value={routeForm.price} onChange={e => setRouteForm({ ...routeForm, price: Number(e.target.value) })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Precio" />
+                <input required value={routeForm.route_name} onChange={e => setRouteForm({ ...routeForm, route_name: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Ruta..." />
+                <input type="number" step="0.01" required value={routeForm.price} onChange={e => setRouteForm({ ...routeForm, price: Number(e.target.value) })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Precio" />
 
                 <div className="space-y-3">
-                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest px-1">Métodos de Pago</p>
+                  <p className="text-[10px] font-black uppercase text-text/40 tracking-widest px-1">Métodos de Pago</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {paymentMethods.map(pm => (
-                      <label key={pm.id} className="flex items-center gap-2 cursor-pointer p-3 rounded-xl bg-slate-50 dark:bg-slate-800 hover:bg-primary/5 transition-colors group">
+                      <label key={pm.id} className="flex items-center gap-2 cursor-pointer p-3 rounded-xl bg-background hover:bg-primary/5 transition-colors group">
                         <input
                           type="checkbox"
                           checked={routeForm.payment_methods.includes(pm.name)}
@@ -871,47 +871,47 @@ const App: React.FC = () => {
                               : routeForm.payment_methods.filter(m => m !== pm.name);
                             setRouteForm({ ...routeForm, payment_methods: next });
                           }}
-                          className="size-4 rounded border-slate-300 text-primary"
+                          className="size-4 rounded border-border-subtle text-primary"
                         />
-                        <span className="text-xs font-bold dark:text-white group-hover:text-primary transition-colors">{pm.name}</span>
+                        <span className="text-xs font-bold text-text/80 group-hover:text-primary transition-colors">{pm.name}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
                 {!editingRouteId && (
-                  <label className="flex items-center gap-3 cursor-pointer p-2 rounded-xl bg-slate-50 dark:bg-slate-800 transition-colors">
-                    <input type="checkbox" checked={createReturnRoute} onChange={e => setCreateReturnRoute(e.target.checked)} className="size-5 rounded border-slate-300 text-primary" />
-                    <span className="font-bold text-sm dark:text-white">Generar automáticamente ruta inversa</span>
+                  <label className="flex items-center gap-3 cursor-pointer p-2 rounded-xl bg-background transition-colors">
+                    <input type="checkbox" checked={createReturnRoute} onChange={e => setCreateReturnRoute(e.target.checked)} className="size-5 rounded border-border-subtle text-primary" />
+                    <span className="font-bold text-sm text-text/80">Generar automáticamente ruta inversa</span>
                   </label>
                 )}
-                <button type="submit" className="w-full py-4 bg-primary text-white font-black rounded-2xl shadow-lg">
+                <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-2xl shadow-lg hover:scale-[1.01] transition-all">
                   {editingRouteId ? 'GUARDAR CAMBIOS' : 'INCORPORAR RUTA'}
                 </button>
               </form>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-10 shadow-xl space-y-6 transition-colors overflow-hidden">
+            <div className="bg-surface rounded-[2.5rem] border border-border-subtle p-10 shadow-xl space-y-6 transition-colors overflow-hidden">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-primary text-3xl">inventory</span>
-                  <h3 className="text-xl font-black dark:text-white">Rutas cargadas</h3>
+                  <h3 className="text-xl font-black">Rutas cargadas</h3>
                 </div>
                 <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase">{routes.length} Rutas</span>
               </div>
               <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 no-scrollbar">
                 {routes.map(r => (
-                  <div key={r.id} className="p-6 rounded-[2rem] bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 space-y-4 transition-colors">
+                  <div key={r.id} className="p-6 rounded-[2rem] bg-background border border-border-subtle space-y-4 transition-colors">
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="font-black dark:text-white text-lg">{r.origin} → {r.destination}</p>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{r.company} • {r.route_name}</p>
+                        <p className="font-black text-lg">{r.origin} → {r.destination}</p>
+                        <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">{r.company} • {r.route_name}</p>
                       </div>
                       <div className="flex gap-2">
-                        <button onClick={() => { setAddingScheduleToRouteId(r.id); setEditingSchedule({ id: '', route_id: r.id, departure_time: '08:00', arrival_time: '09:00', operating_days: ['1', '2', '3', '4', '5'] }); }} className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm">
+                        <button onClick={() => { setAddingScheduleToRouteId(r.id); setEditingSchedule({ id: '', route_id: r.id, departure_time: '08:00', arrival_time: '09:00', operating_days: ['1', '2', '3', '4', '5'] }); }} className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-background transition-all shadow-sm">
                           <span className="material-symbols-outlined">add</span>
                         </button>
-                        <button onClick={() => handleEditRoute(r)} className="size-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all shadow-sm">
+                        <button onClick={() => handleEditRoute(r)} className="size-10 rounded-full bg-accent/10 text-accent flex items-center justify-center hover:bg-accent hover:text-background transition-all shadow-sm">
                           <span className="material-symbols-outlined">edit</span>
                         </button>
                         <button onClick={() => { if (confirm('¿Eliminar ruta y horarios?')) supabase.deleteRoute(r.id).then(loadData); }} className="size-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-sm">
@@ -922,9 +922,9 @@ const App: React.FC = () => {
 
                     <div className="flex flex-wrap gap-2">
                       {schedules.filter(s => s.route_id === r.id).sort((a, b) => a.departure_time.localeCompare(b.departure_time)).map(s => (
-                        <div key={s.id} className="px-4 py-2 bg-white dark:bg-slate-900 rounded-xl flex items-center gap-3 shadow-sm border border-slate-100 dark:border-slate-800">
+                        <div key={s.id} className="px-4 py-2 bg-surface rounded-xl flex items-center gap-3 shadow-sm border border-border-subtle">
                           <span className="text-sm font-black text-primary tabular-nums">{s.departure_time}</span>
-                          <button onClick={() => handleDeleteScheduleAdmin(s.id)} className="text-slate-300 hover:text-red-500 transition-colors">
+                          <button onClick={() => handleDeleteScheduleAdmin(s.id)} className="text-text/20 hover:text-red-500 transition-colors">
                             <span className="material-symbols-outlined text-[16px]">close</span>
                           </button>
                         </div>
@@ -939,22 +939,22 @@ const App: React.FC = () => {
           {/* Colaboración, Pagos & Empresas */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10">
             {/* Sección de Colaboraciones */}
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-xl border border-slate-100 dark:border-slate-800 transition-colors">
-              <h3 className="text-xl font-black mb-6 dark:text-white flex items-center gap-2">
+            <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
+              <h3 className="text-xl font-black mb-6 flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">volunteer_activism</span> Colaboración
               </h3>
               <form onSubmit={handleAddDonationMethodAdmin} className="space-y-4 mb-6">
-                <input name="name" required className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none" placeholder="Nombre (ej. PayPal)" />
-                <input name="url" required className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none" placeholder="URL" />
-                <button type="submit" className="w-full py-3 bg-primary text-white font-black rounded-xl">AÑADIR</button>
+                <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre (ej. PayPal)" />
+                <input name="url" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="URL" />
+                <button type="submit" className="w-full py-3 bg-primary text-background font-black rounded-xl hover:scale-[1.02] transition-all">AÑADIR</button>
               </form>
               <div className="space-y-2">
                 {donationMethods.map(dm => (
-                  <div key={dm.id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl group transition-colors">
-                    <span className="text-sm font-bold dark:text-white truncate max-w-[120px]">{dm.name}</span>
+                  <div key={dm.id} className="flex items-center justify-between p-3 bg-background rounded-xl group transition-colors">
+                    <span className="text-sm font-bold truncate max-w-[120px]">{dm.name}</span>
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditDonationMethod(dm)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteDonationMethod(dm.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditDonationMethod(dm)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteDonationMethod(dm.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -962,21 +962,21 @@ const App: React.FC = () => {
             </div>
 
             {/* Sección de Métodos de Pago */}
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-xl border border-slate-100 dark:border-slate-800 transition-colors">
-              <h3 className="text-xl font-black mb-6 dark:text-white flex items-center gap-2">
+            <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
+              <h3 className="text-xl font-black mb-6 flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">payments</span> Pagos
               </h3>
               <form onSubmit={handleAddPaymentMethodAdmin} className="space-y-4 mb-6">
-                <input name="name" required className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none" placeholder="Nombre" />
-                <button type="submit" className="w-full py-3 bg-primary text-white font-black rounded-xl">AÑADIR</button>
+                <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre" />
+                <button type="submit" className="w-full py-3 bg-primary text-background font-black rounded-xl hover:scale-[1.02] transition-all">AÑADIR</button>
               </form>
               <div className="space-y-2">
                 {paymentMethods.map(pm => (
-                  <div key={pm.id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl group transition-colors">
-                    <span className="text-sm font-bold dark:text-white">{pm.name}</span>
+                  <div key={pm.id} className="flex items-center justify-between p-3 bg-background rounded-xl group transition-colors">
+                    <span className="text-sm font-bold">{pm.name}</span>
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditPaymentMethod(pm)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeletePaymentMethod(pm.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditPaymentMethod(pm)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
+                      <button onClick={() => handleDeletePaymentMethod(pm.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -984,21 +984,21 @@ const App: React.FC = () => {
             </div>
 
             {/* Sección de Empresas */}
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 shadow-xl border border-slate-100 dark:border-slate-800 transition-colors">
-              <h3 className="text-xl font-black mb-6 dark:text-white flex items-center gap-2">
+            <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
+              <h3 className="text-xl font-black mb-6 flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">business</span> Empresas
               </h3>
               <form onSubmit={handleAddCompanyAdmin} className="space-y-4 mb-6">
-                <input name="name" required className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none" placeholder="Nombre Empresa" />
-                <button type="submit" className="w-full py-3 bg-primary text-white font-black rounded-xl">REGISTRAR</button>
+                <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre Empresa" />
+                <button type="submit" className="w-full py-3 bg-primary text-background font-black rounded-xl hover:scale-[1.02] transition-all">REGISTRAR</button>
               </form>
               <div className="space-y-2">
                 {companies.map(c => (
-                  <div key={c.id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl group transition-colors">
-                    <span className="text-sm font-bold dark:text-white">{c.name}</span>
+                  <div key={c.id} className="flex items-center justify-between p-3 bg-background rounded-xl group transition-colors">
+                    <span className="text-sm font-bold">{c.name}</span>
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditCompany(c)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteCompany(c.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditCompany(c)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteCompany(c.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -1011,33 +1011,33 @@ const App: React.FC = () => {
       {/* PERFIL TAB */}
       {activeTab === 'profile' && (
         <div className="max-w-2xl mx-auto space-y-12 animate-fade-in pb-20">
-          <div className="flex flex-col items-center gap-6 p-10 bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-2xl transition-colors">
+          <div className="flex flex-col items-center gap-6 p-10 bg-surface rounded-[3rem] border border-border-subtle shadow-2xl transition-colors">
             <div className="relative">
               <img src={user.avatar_url} className="size-32 rounded-full border-4 border-primary/20 shadow-xl" alt="Avatar" />
-              <div className="absolute bottom-0 right-0 size-8 bg-primary rounded-full border-4 border-white dark:border-slate-900 flex items-center justify-center text-white cursor-pointer hover:scale-110 transition-transform"><span className="material-symbols-outlined text-[14px]">edit</span></div>
+              <div className="absolute bottom-0 right-0 size-8 bg-primary rounded-full border-4 border-surface flex items-center justify-center text-background cursor-pointer hover:scale-110 transition-transform"><span className="material-symbols-outlined text-[14px]">edit</span></div>
             </div>
             <div className="text-center">
-              <h2 className="text-3xl font-black dark:text-white">{user.name || 'Viajero'}</h2>
-              <p className="text-slate-400 font-bold">{user.email}</p>
+              <h2 className="text-3xl font-black">{user.name || 'Viajero'}</h2>
+              <p className="text-text/40 font-bold">{user.email}</p>
               <span className="mt-2 inline-block px-4 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase tracking-widest">{user.role}</span>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-100 dark:border-slate-800 p-10 shadow-xl transition-colors">
-            <h3 className="text-2xl font-black mb-8 dark:text-white">Ajustes de Cuenta</h3>
+          <div className="bg-surface rounded-[3rem] border border-border-subtle p-10 shadow-xl transition-colors">
+            <h3 className="text-2xl font-black mb-8">Ajustes de Cuenta</h3>
             <form onSubmit={handleUpdateProfile} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input value={profileForm.name} onChange={e => setProfileForm({ ...profileForm, name: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Nombre" />
-                <input type="email" value={profileForm.email} onChange={e => setProfileForm({ ...profileForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Email" />
+                <input value={profileForm.name} onChange={e => setProfileForm({ ...profileForm, name: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre" />
+                <input type="email" value={profileForm.email} onChange={e => setProfileForm({ ...profileForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Email" />
               </div>
-              <div className="pt-8 border-t border-slate-100 dark:border-slate-800 space-y-6 transition-colors">
-                <h4 className="text-sm font-black text-slate-400 uppercase tracking-widest">Seguridad</h4>
+              <div className="pt-8 border-t border-border-subtle space-y-6 transition-colors">
+                <h4 className="text-sm font-black text-text/40 uppercase tracking-widest">Seguridad</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input type="password" value={profileForm.newPassword} onChange={e => setProfileForm({ ...profileForm, newPassword: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Nueva contraseña" />
-                  <input type="password" value={profileForm.confirmNewPassword} onChange={e => setProfileForm({ ...profileForm, confirmNewPassword: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Confirmar nueva" />
+                  <input type="password" value={profileForm.newPassword} onChange={e => setProfileForm({ ...profileForm, newPassword: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nueva contraseña" />
+                  <input type="password" value={profileForm.confirmNewPassword} onChange={e => setProfileForm({ ...profileForm, confirmNewPassword: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Confirmar nueva" />
                 </div>
               </div>
-              <button type="submit" className="w-full py-5 bg-primary text-white font-black rounded-2xl shadow-xl hover:scale-[1.02] transition-all">ACTUALIZAR PERFIL</button>
+              <button type="submit" className="w-full py-5 bg-primary text-background font-black rounded-2xl shadow-xl hover:scale-[1.02] transition-all">ACTUALIZAR PERFIL</button>
             </form>
           </div>
         </div>
@@ -1075,26 +1075,26 @@ const App: React.FC = () => {
 
       {/* Add Schedule Modal */}
       {(addingScheduleToRouteId || editingSchedule?.id) && editingSchedule && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-8 space-y-8 transition-colors">
-            <h3 className="text-2xl font-black dark:text-white">{addingScheduleToRouteId ? 'Nueva Frecuencia' : 'Editar Frecuencia'}</h3>
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-text/60 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-lg bg-surface rounded-[2.5rem] shadow-2xl p-8 space-y-8 transition-colors">
+            <h3 className="text-2xl font-black">{addingScheduleToRouteId ? 'Nueva Frecuencia' : 'Editar Frecuencia'}</h3>
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase text-primary tracking-widest px-1">Hora Salida</label>
-                <input type="time" value={editingSchedule.departure_time} onChange={e => setEditingSchedule({ ...editingSchedule, departure_time: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" />
+                <input type="time" value={editingSchedule.departure_time} onChange={e => setEditingSchedule({ ...editingSchedule, departure_time: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase text-primary tracking-widest px-1">Hora Llegada</label>
-                <input type="time" value={editingSchedule.arrival_time} onChange={e => setEditingSchedule({ ...editingSchedule, arrival_time: e.target.value })} className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" />
+                <input type="time" value={editingSchedule.arrival_time} onChange={e => setEditingSchedule({ ...editingSchedule, arrival_time: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" />
               </div>
             </div>
 
             <div className="space-y-4">
-              <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest px-1">Días de Operación</p>
+              <p className="text-[10px] font-black uppercase text-text/40 tracking-widest px-1">Días de Operación</p>
               <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={() => handlePresetDays('lv')} className="px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-[10px] font-black text-slate-600 dark:text-slate-300 hover:bg-primary/20 transition-colors">LUN-VIE</button>
-                <button type="button" onClick={() => handlePresetDays('fs')} className="px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-[10px] font-black text-slate-600 dark:text-slate-300 hover:bg-primary/20 transition-colors">SÁB-DOM</button>
-                <button type="button" onClick={() => handlePresetDays('all')} className="px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-[10px] font-black text-slate-600 dark:text-slate-300 hover:bg-primary/20 transition-colors">DIARIO</button>
+                <button type="button" onClick={() => handlePresetDays('lv')} className="px-3 py-2 bg-background rounded-lg text-[10px] font-black text-text/60 hover:bg-primary/20 transition-colors">LUN-VIE</button>
+                <button type="button" onClick={() => handlePresetDays('fs')} className="px-3 py-2 bg-background rounded-lg text-[10px] font-black text-text/60 hover:bg-primary/20 transition-colors">SÁB-DOM</button>
+                <button type="button" onClick={() => handlePresetDays('all')} className="px-3 py-2 bg-background rounded-lg text-[10px] font-black text-text/60 hover:bg-primary/20 transition-colors">DIARIO</button>
               </div>
               <div className="grid grid-cols-4 gap-2 pt-2">
                 {['1', '2', '3', '4', '5', '6', '0', 'H'].map(day => (
@@ -1102,7 +1102,7 @@ const App: React.FC = () => {
                     const current = editingSchedule.operating_days;
                     const next = current.includes(day) ? current.filter(d => d !== day) : [...current, day];
                     setEditingSchedule({ ...editingSchedule, operating_days: next });
-                  }} className={`py-2 rounded-xl text-[10px] font-black transition-all ${editingSchedule.operating_days.includes(day) ? 'bg-primary text-white shadow-md' : 'bg-slate-50 dark:bg-slate-800 text-slate-400'}`}>
+                  }} className={`py-2 rounded-xl text-[10px] font-black transition-all ${editingSchedule.operating_days.includes(day) ? 'bg-primary text-background shadow-md' : 'bg-background text-text/40'}`}>
                     {day === 'H' ? 'FER' : DAY_NAMES[parseInt(day)]}
                   </button>
                 ))}
@@ -1110,8 +1110,8 @@ const App: React.FC = () => {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <button onClick={() => { setAddingScheduleToRouteId(null); setEditingSchedule(null); }} className="flex-1 py-4 font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-all">Cerrar</button>
-              <button onClick={handleAddSchedule} className="flex-[2] py-4 bg-primary text-white font-bold rounded-2xl shadow-xl hover:scale-105 transition-all">GUARDAR FRECUENCIA</button>
+              <button onClick={() => { setAddingScheduleToRouteId(null); setEditingSchedule(null); }} className="flex-1 py-4 font-bold text-text/40 hover:bg-surface-variant rounded-2xl transition-all">Cerrar</button>
+              <button onClick={handleAddSchedule} className="flex-[2] py-4 bg-primary text-background font-bold rounded-2xl shadow-xl hover:scale-105 transition-all">GUARDAR FRECUENCIA</button>
             </div>
           </div>
         </div>

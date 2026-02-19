@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Light Palette */
+  --text: #091b0f;
+  --background: #f7fdf9;
+  --primary: #008533;
+  --secondary: #7af0a7;
+  --accent: #00eeff;
+  
+  /* Derived Variations (Light) */
+  --surface: #ffffff;
+  --surface-variant: #e1e5df;
+  --border-subtle: #e4f0e7;
+  --primary-muted: #e6f7ed;
+  --shadow: rgba(0, 133, 51, 0.05);
+}
+
+.dark {
+  /* Dark Palette */
+  --text: #e4f6ea;
+  --background: #020804;
+  --primary: #7affad;
+  --secondary: #0f853c;
+  --accent: #00eeff;
+  
+  /* Derived Variations (Dark) */
+  --surface: #0a140d;
+  --surface-variant: #1a261d;
+  --border-subtle: #142117;
+  --primary-muted: #083319;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text transition-colors duration-300;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Dongle', sans-serif;
+    @apply font-bold leading-none uppercase tracking-wide;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-surface/80 backdrop-blur-md border border-border-subtle shadow-xl transition-all;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-background font-bold px-6 py-3 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-lg;
+  }
+}
