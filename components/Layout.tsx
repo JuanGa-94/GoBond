@@ -24,7 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user, activeTab, setActiveTab
             <span className="material-symbols-outlined">directions_bus</span>
           </div>
           <div>
-            <h1 className="text-xl font-black tracking-tight dark:text-white">TwBond</h1>
+            <h1 className="text-xl font-black tracking-tight dark:text-white">GoBond!</h1>
             <p className="text-primary text-[10px] font-bold uppercase tracking-widest leading-none">Interurbanos</p>
           </div>
         </div>

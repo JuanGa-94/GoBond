@@ -503,7 +503,7 @@ const App: React.FC = () => {
             <div className="bg-primary p-4 rounded-2xl text-white mb-6 shadow-xl">
               <span className="material-symbols-outlined text-4xl">directions_bus</span>
             </div>
-            <h1 className="text-3xl font-black tracking-tight dark:text-white mb-2">TwBond</h1>
+            <h1 className="text-3xl font-black tracking-tight dark:text-white mb-2">GoBond!</h1>
             <p className="text-slate-400 font-medium">¡Los horarios que necesitás, en un solo lugar!</p>
           </div>
 
