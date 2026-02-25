@@ -3,10 +3,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 
 interface CountdownTimerProps {
   departureTime: string;
+  targetDate?: Date;
   onFinish?: () => void;
 }
 
-const CountdownTimer: React.FC<CountdownTimerProps> = ({ departureTime, onFinish }) => {
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ departureTime, targetDate, onFinish }) => {
   const [timeLeftMs, setTimeLeftMs] = useState<number>(0);
 
   useEffect(() => {
@@ -14,10 +15,10 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ departureTime, onFinish
       const now = new Date();
       const [hours, minutes] = departureTime.split(':').map(Number);
 
-      const target = new Date();
+      const target = targetDate ? new Date(targetDate) : new Date();
       target.setHours(hours, minutes, 0, 0);
 
-      if (target.getTime() < now.getTime()) {
+      if (!targetDate && target.getTime() < now.getTime()) {
         target.setDate(target.getDate() + 1);
       }
 

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { User, UserRole } from '../types';
+import { GobondIcon } from './gobondIcon';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,8 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user, activeTab, setActiveTab
       <aside className="hidden md:flex flex-col fixed inset-y-0 left-0 w-64 border-r border-border-subtle bg-surface p-6 z-40 transition-colors">
         <div className="flex items-center gap-3 mb-10">
           <div className="bg-primary rounded-lg p-2 text-background flex items-center justify-center shadow-lg shadow-primary/20">
-            <span className="material-symbols-outlined">directions_bus</span>
-          </div>
+            <GobondIcon className="w-6 h-6" />          </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight">GoBond!</h1>
             <p className="text-primary text-[10px] font-bold uppercase tracking-widest leading-none">Interurbanos</p>

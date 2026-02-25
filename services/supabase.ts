@@ -140,7 +140,7 @@ class SupabaseService {
     return data;
   }
 
-  async validateAndSetSelection(userId: string, routeId: string, scheduleId: string) {
+  async validateAndSetSelection(userId: string, routeId: string, scheduleId: string, targetDate: Date) {
     // 1. Fetch schedule
     const { data: schedule, error: sErr } = await supabaseClient
       .from('schedules')
@@ -161,7 +161,7 @@ class SupabaseService {
     // 3. Validate time
     const now = new Date();
     const [hours, minutes] = schedule.departure_time.split(':').map(Number);
-    const target = new Date();
+    const target = new Date(targetDate);
     target.setHours(hours, minutes, 0, 0);
 
     const diffInMinutes = (target.getTime() - now.getTime()) / (1000 * 60);
@@ -177,7 +177,12 @@ class SupabaseService {
 
     const { data, error } = await supabaseClient
       .from('active_selections')
-      .insert({ user_id: userId, route_id: routeId, schedule_id: scheduleId })
+      .insert({
+        user_id: userId,
+        route_id: routeId,
+        schedule_id: scheduleId,
+        target_date: targetDate.toISOString().split('T')[0]
+      })
       .select()
       .single();
     if (error) throw new Error(error.message);

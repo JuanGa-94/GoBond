@@ -29,10 +29,10 @@ export interface Route {
   company: string;
   line: string;
   show_line: boolean;
-  route_name: string;     
-  payment_methods: string[]; 
+  route_name: string;
+  payment_methods: string[];
   is_special: boolean;
-  special_reason?: string; 
+  special_reason?: string;
   price: number;
 }
 
@@ -84,4 +84,5 @@ export interface ActiveSelection {
   routeId: string;
   scheduleId: string;
   selectedAt: string;
+  target_date: string; // ISO date string YYYY-MM-DD
 }
