@@ -4,6 +4,8 @@ import { supabase } from './services/supabase';
 import { User, Route, Schedule, Announcement, UserRole, Company, PaymentMethod, Ad, DonationMethod, NewsItem } from './types';
 import Layout from './components/Layout';
 import CountdownTimer from './components/CountdownTimer';
+import { analytics } from './services/analytics';
+import { AnalyticsDashboard } from './components/Admin/AnalyticsDashboard';
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const FULL_DAY_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -19,7 +21,9 @@ const GobondIcon = ({ className }: { className?: string }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M408.394 231.969L415.518 229.624L408.394 231.969ZM250.319 39V31.5H242.819V39L250.319 39ZM193.872 39L201.369 39.2294L201.605 31.5H193.872V39ZM160.042 231.039L167.148 233.437V233.437L160.042 231.039ZM160.042 315.726L152.936 318.124L160.042 315.726ZM408.394 314.795L415.518 317.14L408.394 314.795ZM346.688 110.889L354.188 110.91L354.188 110.892L354.188 110.875L346.688 110.889ZM317.205 103.389C313.063 103.389 309.705 106.747 309.705 110.889C309.705 115.031 313.063 118.389 317.205 118.389V110.889V103.389ZM255.207 118.389C259.349 118.389 262.707 115.031 262.707 110.889C262.707 106.747 259.349 103.389 255.207 103.389V110.889V118.389ZM194.134 103.389C189.992 103.389 186.634 106.747 186.634 110.889C186.634 115.031 189.992 118.389 194.134 118.389V110.889V103.389ZM132.135 118.389C136.277 118.389 139.635 115.031 139.635 110.889C139.635 106.747 136.277 103.389 132.135 103.389V110.889V118.389ZM99 110.889L91.5003 110.819L91.5 110.854V110.889H99ZM255.639 432.987L259.469 439.435C262.373 437.71 263.765 434.258 262.871 431.001C261.977 427.744 259.016 425.487 255.639 425.487V432.987ZM191.801 432.987V425.487C188.435 425.487 185.482 427.729 184.577 430.971C183.672 434.213 185.038 437.66 187.917 439.403L191.801 432.987ZM223.419 452.126L219.536 458.542C221.904 459.976 224.87 459.988 227.25 458.574L223.419 452.126ZM284.063 272.917L278.756 267.617L273.612 272.768L278.607 278.064L284.063 272.917ZM322.512 245.028C325.439 242.097 325.436 237.348 322.505 234.421C319.574 231.494 314.825 231.497 311.898 234.428L317.205 239.728L322.512 245.028ZM341.1 344.305C343.942 347.318 348.689 347.456 351.702 344.614C354.715 341.771 354.853 337.025 352.011 334.012L346.555 339.158L341.1 344.305ZM99.2064 88.5383L91.7067 88.469L99.2064 88.5383ZM346.647 88.9077L354.147 88.8938L346.647 88.9077ZM284.063 141.698V149.198C338.634 149.198 384.985 184.838 401.27 234.314L408.394 231.969L415.518 229.624C397.283 174.224 345.349 134.198 284.063 134.198V141.698ZM408.394 231.969L401.27 234.314C405.31 246.589 407.5 259.72 407.5 273.382H415H422.5C422.5 258.108 420.05 243.394 415.518 229.624L408.394 231.969ZM296.647 39V31.5L250.319 31.5V39V46.5H296.647V39ZM193.872 39V31.5H149.204V39V46.5H193.872V39ZM153.126 273.382H160.626C160.626 259.395 162.921 245.962 167.148 233.437L160.042 231.039L152.936 228.64C148.194 242.692 145.626 257.744 145.626 273.382H153.126ZM160.042 231.039L167.148 233.437C183.69 184.417 229.815 149.198 284.063 149.198V141.698V134.198C223.14 134.198 171.458 173.752 152.936 228.64L160.042 231.039ZM284.063 405.066V397.566C229.815 397.566 183.69 362.348 167.148 313.328L160.042 315.726L152.936 318.124C171.458 373.013 223.14 412.566 284.063 412.566V405.066ZM160.042 315.726L167.148 313.328C162.921 300.802 160.626 287.37 160.626 273.382H153.126H145.626C145.626 289.021 148.194 304.072 152.936 318.124L160.042 315.726ZM149 475V482.5H297.352V475V467.5H149V475ZM415 273.382H407.5C407.5 287.044 405.31 300.176 401.27 312.45L408.394 314.795L415.518 317.14C420.05 303.37 422.5 288.656 422.5 273.382H415ZM408.394 314.795L401.27 312.45C384.985 361.926 338.634 397.566 284.063 397.566V405.066V412.566C345.349 412.566 397.283 372.54 415.518 317.14L408.394 314.795ZM250.319 39C242.819 39 242.819 38.9966 242.819 38.9934C242.819 38.9925 242.819 38.9893 242.819 38.9874C242.819 38.9837 242.819 38.9804 242.819 38.9775C242.819 38.9718 242.819 38.9678 242.819 38.9655C242.819 38.9609 242.819 38.9632 242.819 38.972C242.818 38.9898 242.818 39.034 242.815 39.1027C242.811 39.2403 242.801 39.475 242.78 39.7927C242.737 40.4305 242.647 41.3878 242.462 42.5548C242.088 44.9259 241.352 47.9657 239.956 50.9091C238.57 53.8325 236.627 56.47 233.904 58.3838C231.248 60.2505 227.408 61.7455 221.633 61.7455V69.2455V76.7455C230.201 76.7455 237.118 74.4598 242.53 70.6554C247.875 66.8982 251.31 61.9743 253.51 57.3363C255.699 52.7184 256.757 48.1968 257.278 44.8969C257.542 43.2284 257.677 41.8227 257.745 40.8065C257.78 40.2972 257.798 39.8821 257.808 39.5767C257.813 39.4238 257.815 39.2981 257.817 39.2015C257.818 39.1531 257.818 39.112 257.818 39.0784C257.818 39.0615 257.819 39.0466 257.819 39.0335C257.819 39.027 257.819 39.0209 257.819 39.0153C257.819 39.0125 257.819 39.0087 257.819 39.0073C257.819 39.0036 257.819 39 250.319 39ZM221.633 69.2455V61.7455C215.856 61.7455 212.106 60.2505 209.569 58.4284C206.966 56.5581 205.134 53.9743 203.851 51.0814C202.558 48.1659 201.918 45.145 201.616 42.7774C201.467 41.6135 201.407 40.6582 201.383 40.0212C201.372 39.7039 201.369 39.4695 201.369 39.332C201.369 39.2634 201.369 39.2193 201.37 39.2015C201.37 39.1926 201.37 39.1903 201.37 39.1949C201.37 39.1972 201.37 39.2012 201.369 39.2069C201.369 39.2098 201.369 39.2131 201.369 39.2168C201.369 39.2187 201.369 39.2218 201.369 39.2227C201.369 39.226 201.369 39.2294 193.872 39C186.376 38.7706 186.376 38.7742 186.376 38.7779C186.376 38.7793 186.375 38.7832 186.375 38.786C186.375 38.7915 186.375 38.7976 186.375 38.8041C186.374 38.8172 186.374 38.8321 186.374 38.849C186.373 38.8826 186.372 38.9237 186.371 38.972C186.37 39.0687 186.369 39.1944 186.369 39.3473C186.369 39.6529 186.375 40.0683 186.394 40.5781C186.431 41.595 186.523 43.0027 186.736 44.6743C187.157 47.9777 188.079 52.5182 190.14 57.1641C192.211 61.8326 195.527 66.8101 200.818 70.6108C206.176 74.4598 213.067 76.7455 221.633 76.7455V69.2455ZM346.688 110.889L354.188 110.875L354.147 88.8938L346.647 88.9077L339.147 88.9215L339.188 110.902L346.688 110.889ZM346.688 110.889V103.389H317.205V110.889V118.389H346.688V110.889ZM255.207 110.889V103.389H194.134V110.889V118.389H255.207V110.889ZM99.2064 88.5383L91.7067 88.469L91.5003 110.819L99 110.889L106.5 110.958L106.706 88.6075L99.2064 88.5383ZM132.135 110.889V103.389H99V110.889V118.389H132.135V110.889ZM191.801 432.987L187.917 439.403L219.536 458.542L223.419 452.126L227.303 445.71L195.685 426.571L191.801 432.987ZM223.419 452.126L227.25 458.574L259.469 439.435L255.639 432.987L251.808 426.539L219.589 445.678L223.419 452.126ZM284.063 272.917L289.37 278.216L322.512 245.028L317.205 239.728L311.898 234.428L278.756 267.617L284.063 272.917ZM284.063 272.917L278.607 278.064L341.1 344.305L346.555 339.158L352.011 334.012L289.518 267.77L284.063 272.917ZM99 110.889H91.5V425H99H106.5V110.889H99ZM346.555 157.635L354.055 157.657L354.188 110.91L346.688 110.889L339.188 110.867L339.055 157.614L346.555 157.635ZM347.352 425H354.852V388.689H347.352H339.852V425H347.352ZM255.639 432.987V425.487H223.419V432.987V440.487H255.639V432.987ZM223.419 432.987V425.487H191.801V432.987V440.487H223.419V432.987ZM223.419 452.126H230.919V432.987H223.419H215.919V452.126H223.419ZM297.352 475V482.5C329.108 482.5 354.852 456.756 354.852 425H347.352H339.852C339.852 448.472 320.824 467.5 297.352 467.5V475ZM149 475V467.5C125.528 467.5 106.5 448.472 106.5 425H99H91.5C91.5 456.756 117.244 482.5 149 482.5V475ZM149.204 39V31.5C117.655 31.5 91.9981 56.9211 91.7067 88.469L99.2064 88.5383L106.706 88.6075C106.921 65.2895 125.885 46.5 149.204 46.5V39ZM296.647 39V46.5C320.089 46.5 339.104 65.4801 339.147 88.9215L346.647 88.9077L354.147 88.8938C354.089 57.179 328.362 31.5 296.647 31.5V39Z" fill="currentColor" />
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M193.872 39C193.872 39 192.947 69.2451 221.633 69.2451C250.318 69.2449 250.318 39 250.318 39H296.647C324.225 39.0002 346.596 61.3294 346.647 88.9072L346.674 103.389H317.205C313.063 103.389 309.705 106.747 309.705 110.889C309.705 115.031 313.063 118.389 317.205 118.389H346.666L346.555 157.636L347.352 388.689V425C347.352 452.614 324.966 475 297.352 475H149C121.386 475 99 452.614 99 425V118.389H132.135C136.277 118.389 139.635 115.031 139.635 110.889C139.635 106.747 136.277 103.389 132.135 103.389H99.0693L99.2061 88.5381C99.4595 61.1052 121.77 39 149.204 39H193.872ZM191.801 425.487C188.435 425.487 185.482 427.729 184.577 430.971C183.672 434.213 185.038 437.66 187.917 439.403L219.535 458.542C221.903 459.976 224.869 459.988 227.249 458.574L259.469 439.436C262.372 437.711 263.765 434.258 262.871 431.001C261.977 427.744 259.016 425.487 255.639 425.487H191.801ZM194.134 103.389C189.992 103.389 186.634 106.747 186.634 110.889C186.634 115.031 189.992 118.389 194.134 118.389H255.206C259.348 118.389 262.706 115.031 262.706 110.889C262.706 106.747 259.348 103.389 255.206 103.389H194.134Z" fill="var(--primary)" />
+    <path d="M284.062 141.698C341.991 141.698 391.134 179.531 408.394 231.969C412.68 244.991 415 258.914 415 273.382C415 287.85 412.68 301.773 408.394 314.795C391.134 367.233 341.991 405.066 284.062 405.066C226.477 405.066 177.574 367.68 160.042 315.726C155.558 302.437 153.126 288.195 153.126 273.382C153.126 258.569 155.558 244.327 160.042 231.038C177.574 179.084 226.477 141.698 284.062 141.698Z" fill="var(--secondary)" />
+    <path d="M311.898 234.428C314.825 231.498 319.574 231.494 322.505 234.421C325.435 237.348 325.438 242.097 322.512 245.028L294.513 273.065L352.011 334.012C354.853 337.025 354.714 341.771 351.701 344.614C348.688 347.456 343.942 347.318 341.1 344.305L278.607 278.063L273.611 272.768L278.756 267.617L311.898 234.428Z" fill="var(--primary)" />
 
   </svg>
 );
@@ -71,6 +75,9 @@ const App: React.FC = () => {
   // Modal for details
   const [pendingSchedule, setPendingSchedule] = useState<ExtendedSchedule | null>(null);
 
+  // Admin View state
+  const [adminView, setAdminView] = useState<'management' | 'analytics'>('management');
+
   // Currency Formatter
   const formatCurrency = useCallback((amount: number) => {
     const parts = amount.toFixed(2).split('.');
@@ -92,6 +99,14 @@ const App: React.FC = () => {
     supabase.getCurrentUser().then(u => {
       if (u) setUser(u);
     }).catch(() => { });
+
+    // Track session start
+    analytics.trackEvent('session_start');
+
+    return () => {
+      // Track session end (best effort)
+      analytics.trackEvent('session_end');
+    };
   }, []);
 
   const loadData = useCallback(async () => {
@@ -185,6 +200,7 @@ const App: React.FC = () => {
     try {
       const loggedUser = await supabase.loginWithEmail(authForm.email, authForm.password);
       setUser(loggedUser);
+      analytics.trackEvent('login', { method: 'email' }, loggedUser.id);
       setActiveTab('home');
       loadData();
     } catch (err: any) {
@@ -206,6 +222,7 @@ const App: React.FC = () => {
     try {
       const loggedUser = await supabase.registerWithEmail(authForm.email, authForm.password, authForm.name);
       setUser(loggedUser);
+      analytics.trackEvent('register', { method: 'email' }, loggedUser.id);
       setActiveTab('home');
       loadData();
     } catch (err: any) {
@@ -214,6 +231,7 @@ const App: React.FC = () => {
   };
 
   const handleLogout = async () => {
+    if (user) analytics.trackEvent('logout', {}, user.id);
     await supabase.logout();
     setUser(null);
     setActiveSelection(null);
@@ -245,6 +263,14 @@ const App: React.FC = () => {
       const targetDate = selectedDay?.date || new Date();
 
       await supabase.validateAndSetSelection(user.id, pendingSchedule.route.id, pendingSchedule.id, targetDate);
+      analytics.trackEvent('countdown_activated', {
+        route_id: pendingSchedule.route.id,
+        schedule_id: pendingSchedule.id,
+        company_id: pendingSchedule.route.company,
+        origin: pendingSchedule.route.origin,
+        destination: pendingSchedule.route.destination
+      }, user.id);
+
       setActiveSelection({ route: pendingSchedule.route, schedule: pendingSchedule, targetDate });
       setPendingSchedule(null);
       setActiveTab('home');
@@ -256,6 +282,10 @@ const App: React.FC = () => {
 
   const handleCancelSelection = async () => {
     if (!user) return;
+    analytics.trackEvent('countdown_cancelled', {
+      route_id: activeSelection?.route.id,
+      schedule_id: activeSelection?.schedule.id
+    }, user.id);
     await supabase.clearSelection(user.id);
     setActiveSelection(null);
   };
@@ -495,7 +525,7 @@ const App: React.FC = () => {
       <Layout user={user} activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} theme={theme} onToggleTheme={toggleTheme}>
         <div className="max-w-4xl mx-auto space-y-10 animate-fade-in">
           <button onClick={() => setSelectedAd(null)} className="flex items-center gap-2 text-primary font-bold hover:translate-x-[-4px] transition-all">
-            <span className="material-symbols-outlined">arrow_back</span> Regresar
+            <span className="material-symbols-rounded">arrow_back</span> Regresar
           </button>
           <div className="bg-surface rounded-[3rem] overflow-hidden shadow-2xl border border-border-subtle transition-colors">
             <img src={selectedAd.image_url} className="w-full h-[400px] object-cover" alt={selectedAd.title} />
@@ -504,7 +534,7 @@ const App: React.FC = () => {
               <p className="text-text/70 font-medium text-lg leading-relaxed">{selectedAd.description}</p>
               <div className="pt-6">
                 <a href={selectedAd.external_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-5 bg-primary text-background font-bold rounded-2xl shadow-xl hover:scale-105 transition-all">
-                  VISITAR SITIO <span className="material-symbols-outlined">open_in_new</span>
+                  VISITAR SITIO <span className="material-symbols-rounded">open_in_new</span>
                 </a>
               </div>
             </div>
@@ -519,10 +549,15 @@ const App: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center p-6 bg-background transition-colors">
         <div className="w-full max-w-md bg-surface rounded-[2.5rem] shadow-2xl p-10 border border-border-subtle animate-slide-up transition-colors">
           <div className="flex flex-col items-center mb-10">
-            <div className="bg-primary p-4 rounded-2xl text-background mb-6 shadow-xl">
-              <GobondIcon className="w-12 h-12" />
+            <div className="p-4 rounded-2xl">
+              <GobondIcon className="w-24 h-24" />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight mb-2">GoBond!</h1>
+            <h1 className="text-6xl font-bold tracking-tight mb-2 normal-case">
+              <span className="text-[var(--primary)]">Go</span>
+              <span className="text-[var(--secondary)]">Bond</span>
+              <span className="text-[var(--primary)]">!</span>
+
+            </h1>
             <p className="text-text/60 font-medium">¡Los horarios que necesitás, en un solo lugar!</p>
           </div>
 
@@ -576,7 +611,7 @@ const App: React.FC = () => {
                   <p className="text-[10px] font-bold uppercase text-primary tracking-widest">{pendingSchedule.route.company}</p>
                   <h3 className="text-2xl font-bold">{pendingSchedule.route.route_name}</h3>
                 </div>
-                <button onClick={() => setPendingSchedule(null)} className="size-10 rounded-full bg-surface-variant flex items-center justify-center text-text/40 hover:text-text/60 transition-all"><span className="material-symbols-outlined">close</span></button>
+                <button onClick={() => setPendingSchedule(null)} className="size-10 rounded-full bg-surface-variant flex items-center justify-center text-text/40 hover:text-text/60 transition-all"><span className="material-symbols-rounded">close</span></button>
               </div>
 
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 bg-background p-6 rounded-2xl border border-border-subtle">
@@ -584,7 +619,7 @@ const App: React.FC = () => {
                   <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Salida</p>
                   <p className="text-2xl font-bold text-primary">{pendingSchedule.departure_time}</p>
                 </div>
-                <span className="material-symbols-outlined text-primary/30">east</span>
+                <span className="material-symbols-rounded text-primary/30">east</span>
                 <div className="space-y-1 text-right">
                   <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Arribo</p>
                   <p className="text-2xl font-bold text-primary/60">{pendingSchedule.arrival_time}</p>
@@ -601,7 +636,7 @@ const App: React.FC = () => {
                     <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Pagos aceptados</p>
                     <div className="flex flex-wrap justify-end gap-1">
                       {pendingSchedule.route.payment_methods.map(pm => (
-                        <span key={pm} className="px-2 py-0.5 bg-primary/10 text-primary text-[8px] font-bold rounded-full uppercase tracking-tighter border border-primary/20">
+                        <span key={pm} className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full  tracking-tighter border border-primary/20">
                           {pm}
                         </span>
                       ))}
@@ -611,9 +646,9 @@ const App: React.FC = () => {
               </div>
 
               <div className="flex gap-4 pt-4">
-                <button onClick={() => setPendingSchedule(null)} className="flex-1 py-4 font-bold text-text/50 hover:bg-surface-variant rounded-2xl transition-all">Cancelar</button>
-                <button onClick={handleConfirmSelection} className="flex-[2] py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-lg flex items-center justify-center gap-2">
-                  <span className="material-symbols-outlined">check_circle</span> CONFIRMAR
+                <button onClick={() => setPendingSchedule(null)} className="flex-1 py-4 font-bold text-text/50 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-2xl transition-all">Cancelar</button>
+                <button onClick={handleConfirmSelection} className="flex-[2] py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 hover:scale-[1.06] transition-all shadow-lg flex items-center justify-center gap-2">
+                  <span className="material-symbols-rounded">check_circle</span> CONFIRMAR
                 </button>
               </div>
             </div>
@@ -647,11 +682,11 @@ const App: React.FC = () => {
                 </div>
                 <CountdownTimer departureTime={activeSelection.schedule.departure_time} targetDate={activeSelection.targetDate} />
                 <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button onClick={handleCancelSelection} className="py-4 bg-surface-variant text-text/60 font-bold rounded-2xl transition-all flex items-center justify-center gap-2">
-                    <span className="material-symbols-outlined">cancel</span> CANCELAR
+                  <button onClick={handleCancelSelection} className="py-4 bg-surface-variant text-text/60 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 font-bold rounded-2xl transition-all flex items-center justify-center gap-2">
+                    <span className="material-symbols-rounded">cancel</span> CANCELAR
                   </button>
-                  <button onClick={handleBoardedBus} className="py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg">
-                    <GobondIcon className="w-6 h-6" /> YA ESTOY EN EL BUS
+                  <button onClick={handleBoardedBus} className="py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 hover:scale-[1.04] transition-all flex items-center justify-center gap-2 shadow-lg">
+                    <span class="material-symbols-rounded">check_circle_unread</span> YA ESTOY EN EL BUS
                   </button>
                 </div>
               </div>
@@ -660,17 +695,17 @@ const App: React.FC = () => {
 
           <section className="space-y-2">
             <h1 className="text-4xl font-bold tracking-tight">Hola, {user.name || 'Viajero'} !! 😊</h1>
-            <p className="text-text/60 text-lg font-medium">Servicios interurbanos en un solo lugar</p>
+            <p className="text-slate-500 text-lg font-medium">Servicios interurbanos en un solo lugar</p>
           </section>
 
           {/* Quick Search transitioning to Search Tab */}
           <div className="bg-surface rounded-[2.5rem] p-8 shadow-2xl border border-border-subtle transition-colors">
             <div className="flex items-center gap-4 mb-6">
-              <span className="material-symbols-outlined text-primary text-3xl">explore</span>
+              <span className="material-symbols-rounded text-primary text-3xl">explore</span>
               <h3 className="text-xl font-bold">Buscador rápido</h3>
             </div>
-            <button onClick={() => setActiveTab('search')} className="w-full bg-primary text-background font-bold py-5 rounded-2xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 shadow-xl hover:scale-[1.01]">
-              <span className="material-symbols-outlined">search</span> BUSCAR MI PRÓXIMO BUS
+            <button onClick={() => setActiveTab('search')} className="w-full bg-primary text-background font-bold py-5 rounded-2xl hover:bg-primary/90 transition-all flex items-center justify-center gap-3 shadow-xl hover:scale-[1.06]">
+              <span className="material-symbols-rounded">search</span> BUSCAR MI PRÓXIMO BUS
             </button>
           </div>
 
@@ -713,14 +748,14 @@ const App: React.FC = () => {
           <div className="flex justify-between items-end">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold">Buscador de Horarios</h2>
-              <p className="text-text/50 font-medium">Selecciona tu trayecto para ver las frecuencias disponibles.</p>
+              <p className="text-slate-500 font-medium">Selecciona tu trayecto para ver las frecuencias disponibles.</p>
             </div>
             {(searchQuery.origin || searchQuery.destination) && (
               <button
                 onClick={() => setSearchQuery({ origin: '', destination: '' })}
                 className="flex items-center gap-1 text-xs font-black text-primary hover:text-primary/70 transition-colors mb-2"
               >
-                <span className="material-symbols-outlined text-sm">restart_alt</span>
+                <span className="material-symbols-rounded text-sm">restart_alt</span>
                 REINICIAR
               </button>
             )}
@@ -731,21 +766,29 @@ const App: React.FC = () => {
               <div className="space-y-3">
                 <label className="text-xs font-bold text-text/40 uppercase tracking-wider px-1">Partida</label>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none">location_on</span>
-                  <select className="w-full pl-12 pr-10 py-5 rounded-2xl bg-background focus:ring-2 focus:ring-primary outline-none text-text appearance-none cursor-pointer font-bold transition-colors" value={searchQuery.origin} onChange={(e) => setSearchQuery({ origin: e.target.value, destination: '' })}>
+                  <span className="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none">location_on</span>
+                  <select className="w-full pl-12 pr-10 py-5 rounded-2xl bg-background focus:ring-2 focus:ring-primary outline-none text-text appearance-none cursor-pointer font-bold transition-colors" value={searchQuery.origin} onChange={(e) => {
+                    const newOrigin = e.target.value;
+                    setSearchQuery({ origin: newOrigin, destination: '' });
+                    if (newOrigin) analytics.trackEvent('search_origin', { origin: newOrigin }, user?.id);
+                  }}>
                     <option value="">Selecciona origen</option>
                     {uniqueOrigins.map(origin => (<option key={origin} value={origin}>{origin}</option>))}
                   </select>
                 </div>
               </div>
               <div className="flex justify-center pb-2 text-text/20">
-                <span className="material-symbols-outlined rotate-90 md:rotate-0">east</span>
+                <span className="material-symbols-rounded rotate-90 md:rotate-0">east</span>
               </div>
               <div className="space-y-3">
                 <label className="text-xs font-bold text-text/40 uppercase tracking-wider px-1">Destino</label>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none">flag</span>
-                  <select disabled={!searchQuery.origin} className="w-full pl-12 pr-10 py-5 rounded-2xl focus:ring-2 focus:ring-primary outline-none appearance-none font-bold bg-background text-text disabled:opacity-50 transition-colors" value={searchQuery.destination} onChange={(e) => setSearchQuery({ ...searchQuery, destination: e.target.value })}>
+                  <span className="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none">flag</span>
+                  <select disabled={!searchQuery.origin} className="w-full pl-12 pr-10 py-5 rounded-2xl focus:ring-2 focus:ring-primary outline-none appearance-none font-bold bg-background text-text disabled:opacity-50 transition-colors" value={searchQuery.destination} onChange={(e) => {
+                    const newDest = e.target.value;
+                    setSearchQuery({ ...searchQuery, destination: newDest });
+                    if (newDest) analytics.trackEvent('search', { origin: searchQuery.origin, destination: newDest }, user?.id);
+                  }}>
                     <option value="">Selecciona destino</option>
                     {availableDestinations.map(dest => (<option key={dest} value={dest}>{dest}</option>))}
                   </select>
@@ -764,7 +807,15 @@ const App: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 gap-4">
                 {filteredSchedules.map(item => (
-                  <div key={item.id} onClick={() => setPendingSchedule(item)} className="bg-surface p-8 rounded-[2rem] border border-border-subtle flex items-center justify-between group hover:shadow-2xl transition-all cursor-pointer">
+                  <div key={item.id} onClick={() => {
+                    setPendingSchedule(item);
+                    analytics.trackEvent('frequency_click', {
+                      route_id: item.route.id,
+                      schedule_id: item.id,
+                      origin: item.route.origin,
+                      destination: item.route.destination
+                    }, user?.id);
+                  }} className="bg-surface p-8 rounded-[2rem] border border-border-subtle flex items-center justify-between group hover:shadow-2xl transition-all cursor-pointer">
                     <div className="flex items-center gap-8">
                       <div className="text-5xl font-bold text-primary tabular-nums">{item.departure_time}</div>
                       <div>
@@ -772,12 +823,12 @@ const App: React.FC = () => {
                         <p className="text-[10px] text-text/40 font-bold uppercase">{item.route.company}</p>
                       </div>
                     </div>
-                    <span className="material-symbols-outlined text-4xl text-text/10 group-hover:text-primary transition-all">chevron_right</span>
+                    <span className="material-symbols-rounded text-4xl text-text/10 group-hover:text-primary transition-all">chevron_right</span>
                   </div>
                 ))}
                 {filteredSchedules.length === 0 && (
                   <div className="py-20 text-center space-y-4">
-                    <span className="material-symbols-outlined text-6xl text-slate-200">event_busy</span>
+                    <span className="material-symbols-rounded text-6xl text-slate-200">event_busy</span>
                     <p className="text-slate-400 font-bold">Sin frecuencias disponibles para hoy.</p>
                   </div>
                 )}
@@ -790,29 +841,30 @@ const App: React.FC = () => {
       {/* ADMIN TAB */}
       {activeTab === 'admin' && (
         <div className="space-y-12 animate-fade-in pb-24">
-          <h2 className="text-3xl font-black dark:text-white">Panel de Gestión</h2>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h2 className="text-3xl font-black dark:text-white">Panel de Gestión</h2>
+          </div>
 
-          {/* Novedades & Publicidad Management */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 shadow-xl border border-slate-100 dark:border-slate-800 space-y-8 transition-colors">
+            <div className="bg-surface rounded-[2.5rem] p-10 shadow-xl border border-border-subtle space-y-8 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary text-3xl">notifications</span>
+                  <span className="material-symbols-rounded text-primary text-3xl">notifications</span>
                   <h3 className="text-xl font-black dark:text-white">Novedades</h3>
                 </div>
-                <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase">{news.length}</span>
+                <span className="px-3 py-1 bg-primary/10 text-primary text-[12px] font-black rounded-full uppercase">{news.length}</span>
               </div>
               <form onSubmit={handleAddNewsAdmin} className="space-y-4">
-                <textarea name="message" required className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-800 dark:text-white border-none focus:ring-2 focus:ring-primary" placeholder="Mensaje para los usuarios..."></textarea>
-                <button type="submit" className="w-full py-4 bg-primary text-white font-black rounded-xl hover:scale-105 transition-all">AÑADIR AVISO</button>
+                <textarea name="message" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Mensaje para los usuarios..."></textarea>
+                <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-xl hover:scale-105 transition-all">AÑADIR AVISO</button>
               </form>
               <div className="space-y-3">
                 {news.map(n => (
-                  <div key={n.id} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-between group transition-colors">
+                  <div key={n.id} className="p-4 bg-background rounded-2xl flex items-center justify-between group transition-colors">
                     <p className="text-sm font-medium dark:text-slate-200 line-clamp-1 flex-1 pr-4">{n.message}</p>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                      <button onClick={() => handleEditNews(n)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-outlined">edit</span></button>
-                      <button onClick={() => handleDeleteNews(n.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-outlined">delete</span></button>
+                      <button onClick={() => handleEditNews(n)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-rounded">edit</span></button>
+                      <button onClick={() => handleDeleteNews(n.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-rounded">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -822,15 +874,15 @@ const App: React.FC = () => {
             <div className="bg-surface rounded-[2.5rem] p-10 shadow-xl border border-border-subtle space-y-8 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary text-3xl">campaign</span>
+                  <span className="material-symbols-rounded text-primary text-3xl">campaign</span>
                   <h3 className="text-xl font-black">Publicidad</h3>
                 </div>
-                <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase">{ads.length}</span>
+                <span className="px-3 py-1 bg-primary/10 text-primary text-[12px] font-black rounded-full uppercase">{ads.length}</span>
               </div>
               <form onSubmit={handleAddAdAdmin} className="space-y-4">
-                <input name="title" required className="w-full p-4 rounded-xl bg-surface-variant/30 text-text border-none focus:ring-2 focus:ring-primary" placeholder="Título anuncio" />
-                <input name="description" required className="w-full p-4 rounded-xl bg-surface-variant/30 text-text border-none focus:ring-2 focus:ring-primary" placeholder="Descripción breve" />
-                <input name="image_url" required className="w-full p-4 rounded-xl bg-surface-variant/30 text-text border-none focus:ring-2 focus:ring-primary" placeholder="URL de la imagen" />
+                <input name="title" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Título anuncio" />
+                <input name="description" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Descripción breve" />
+                <input name="image_url" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="URL de la imagen" />
                 <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-xl hover:scale-105 transition-all">NUEVO ANUNCIO</button>
               </form>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -841,8 +893,8 @@ const App: React.FC = () => {
                       <p className="text-xs font-bold text-text/80 truncate">{ad.title}</p>
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditAd(ad)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteAd(ad.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditAd(ad)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-rounded text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteAd(ad.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-rounded text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -855,12 +907,12 @@ const App: React.FC = () => {
             <div className="bg-surface rounded-[2.5rem] border border-border-subtle p-10 shadow-xl space-y-8 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary text-3xl">{editingRouteId ? 'edit_road' : 'add_road'}</span>
+                  <span className="material-symbols-rounded text-primary text-3xl">{editingRouteId ? 'edit_road' : 'add_road'}</span>
                   <h3 className="text-xl font-black">{editingRouteId ? 'Editar Ruta' : 'Ruta'}</h3>
                 </div>
                 {editingRouteId && (
-                  <button onClick={cancelEditRoute} className="text-xs font-black text-text/40 hover:text-primary transition-colors flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">cancel</span> CANCELAR
+                  <button onClick={cancelEditRoute} className="text-sm font-black text-text/40 hover:text-primary transition-colors flex items-center gap-1">
+                    <span className="material-symbols-rounded text-sm">cancel</span> CANCELAR
                   </button>
                 )}
               </div>
@@ -913,10 +965,10 @@ const App: React.FC = () => {
             <div className="bg-surface rounded-[2.5rem] border border-border-subtle p-10 shadow-xl space-y-6 transition-colors overflow-hidden">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary text-3xl">inventory</span>
+                  <span className="material-symbols-rounded text-primary text-3xl">inventory</span>
                   <h3 className="text-xl font-black">Rutas cargadas</h3>
                 </div>
-                <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase">{routes.length} Rutas</span>
+                <span className="px-3 py-1 bg-primary/10 text-primary text-[12px] font-black rounded-full uppercase">{routes.length} Rutas</span>
               </div>
               <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 no-scrollbar">
                 {routes.map(r => (
@@ -928,13 +980,13 @@ const App: React.FC = () => {
                       </div>
                       <div className="flex gap-2">
                         <button onClick={() => { setAddingScheduleToRouteId(r.id); setEditingSchedule({ id: '', route_id: r.id, departure_time: '08:00', arrival_time: '09:00', operating_days: ['1', '2', '3', '4', '5'] }); }} className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-background transition-all shadow-sm">
-                          <span className="material-symbols-outlined">add</span>
+                          <span className="material-symbols-rounded">add</span>
                         </button>
                         <button onClick={() => handleEditRoute(r)} className="size-10 rounded-full bg-accent/10 text-accent flex items-center justify-center hover:bg-accent hover:text-background transition-all shadow-sm">
-                          <span className="material-symbols-outlined">edit</span>
+                          <span className="material-symbols-rounded">edit</span>
                         </button>
                         <button onClick={() => { if (confirm('¿Eliminar ruta y horarios?')) supabase.deleteRoute(r.id).then(loadData); }} className="size-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-sm">
-                          <span className="material-symbols-outlined">delete</span>
+                          <span className="material-symbols-rounded">delete</span>
                         </button>
                       </div>
                     </div>
@@ -944,7 +996,7 @@ const App: React.FC = () => {
                         <div key={s.id} className="px-4 py-2 bg-surface rounded-xl flex items-center gap-3 shadow-sm border border-border-subtle">
                           <span className="text-sm font-black text-primary tabular-nums">{s.departure_time}</span>
                           <button onClick={() => handleDeleteScheduleAdmin(s.id)} className="text-text/20 hover:text-red-500 transition-colors">
-                            <span className="material-symbols-outlined text-[16px]">close</span>
+                            <span className="material-symbols-rounded text-[16px]">close</span>
                           </button>
                         </div>
                       ))}
@@ -960,7 +1012,7 @@ const App: React.FC = () => {
             {/* Sección de Colaboraciones */}
             <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
               <h3 className="text-xl font-black mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">volunteer_activism</span> Colaboración
+                <span className="material-symbols-rounded text-primary">volunteer_activism</span> Colaboración
               </h3>
               <form onSubmit={handleAddDonationMethodAdmin} className="space-y-4 mb-6">
                 <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre (ej. PayPal)" />
@@ -972,8 +1024,8 @@ const App: React.FC = () => {
                   <div key={dm.id} className="flex items-center justify-between p-3 bg-background rounded-xl group transition-colors">
                     <span className="text-sm font-bold truncate max-w-[120px]">{dm.name}</span>
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditDonationMethod(dm)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteDonationMethod(dm.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditDonationMethod(dm)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-rounded text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteDonationMethod(dm.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-rounded text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -983,7 +1035,7 @@ const App: React.FC = () => {
             {/* Sección de Métodos de Pago */}
             <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
               <h3 className="text-xl font-black mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">payments</span> Pagos
+                <span className="material-symbols-rounded text-primary">payments</span> Pagos
               </h3>
               <form onSubmit={handleAddPaymentMethodAdmin} className="space-y-4 mb-6">
                 <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre" />
@@ -994,8 +1046,8 @@ const App: React.FC = () => {
                   <div key={pm.id} className="flex items-center justify-between p-3 bg-background rounded-xl group transition-colors">
                     <span className="text-sm font-bold">{pm.name}</span>
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditPaymentMethod(pm)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeletePaymentMethod(pm.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditPaymentMethod(pm)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-rounded text-sm">edit</span></button>
+                      <button onClick={() => handleDeletePaymentMethod(pm.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-rounded text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -1005,7 +1057,7 @@ const App: React.FC = () => {
             {/* Sección de Empresas */}
             <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
               <h3 className="text-xl font-black mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">business</span> Empresas
+                <span className="material-symbols-rounded text-primary">business</span> Empresas
               </h3>
               <form onSubmit={handleAddCompanyAdmin} className="space-y-4 mb-6">
                 <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre Empresa" />
@@ -1016,8 +1068,8 @@ const App: React.FC = () => {
                   <div key={c.id} className="flex items-center justify-between p-3 bg-background rounded-xl group transition-colors">
                     <span className="text-sm font-bold">{c.name}</span>
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditCompany(c)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteCompany(c.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      <button onClick={() => handleEditCompany(c)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-rounded text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteCompany(c.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-rounded text-sm">delete</span></button>
                     </div>
                   </div>
                 ))}
@@ -1027,13 +1079,23 @@ const App: React.FC = () => {
         </div>
       )}
 
+      {/* METRICAS TAB */}
+      {activeTab === 'metrics' && (
+        <div className="space-y-12 animate-fade-in pb-24">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h2 className="text-3xl font-black dark:text-white">Métricas de Uso</h2>
+          </div>
+          <AnalyticsDashboard />
+        </div>
+      )}
+
       {/* PERFIL TAB */}
       {activeTab === 'profile' && (
         <div className="max-w-2xl mx-auto space-y-12 animate-fade-in pb-20">
           <div className="flex flex-col items-center gap-6 p-10 bg-surface rounded-[3rem] border border-border-subtle shadow-2xl transition-colors">
             <div className="relative">
               <img src={user.avatar_url} className="size-32 rounded-full border-4 border-primary/20 shadow-xl" alt="Avatar" />
-              <div className="absolute bottom-0 right-0 size-8 bg-primary rounded-full border-4 border-surface flex items-center justify-center text-background cursor-pointer hover:scale-110 transition-transform"><span className="material-symbols-outlined text-[14px]">edit</span></div>
+              <div className="absolute bottom-0 right-0 size-8 bg-primary rounded-full border-4 border-surface flex items-center justify-center text-background cursor-pointer hover:scale-110 transition-transform"><span className="material-symbols-rounded text-[14px]">edit</span></div>
             </div>
             <div className="text-center">
               <h2 className="text-3xl font-black">{user.name || 'Viajero'}</h2>
@@ -1070,16 +1132,16 @@ const App: React.FC = () => {
             <p className="text-slate-500 text-lg font-medium mt-2">Apoya el mantenimiento de TwBond.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-10 bg-white dark:bg-slate-900 rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center transition-colors">
-              <span className="material-symbols-outlined text-7xl text-primary mb-6">volunteer_activism</span>
+            <div className="p-10 bg-surface rounded-[3rem] shadow-xl border border-border-subtle flex flex-col items-center text-center transition-colors">
+              <span className="material-symbols-rounded text-7xl text-primary mb-6">volunteer_activism</span>
               <h3 className="text-2xl font-black dark:text-white">Tu aporte importa</h3>
-              <p className="text-slate-500 mt-4 leading-relaxed">TwBond es un proyecto independiente mantenido por la comunidad.</p>
+              <p className="text-slate-500 mt-4 leading-relaxed">GoBond! es un proyecto independiente mantenido por la comunidad.</p>
             </div>
             <div className="space-y-4">
               {donationMethods.map(dm => (
-                <a key={dm.id} href={dm.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all group transition-colors">
-                  <div className="size-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
-                    <span className="material-symbols-outlined text-3xl">{dm.icon || 'payments'}</span>
+                <a key={dm.id} href={dm.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 p-6 bg-surface rounded-3xl border border-border-subtle hover:shadow-xl transition-all group transition-colors">
+                  <div className="size-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
+                    <span className="material-symbols-rounded text-3xl">{dm.icon || 'payments'}</span>
                   </div>
                   <div className="flex-1">
                     <h4 className="font-black dark:text-white text-lg">{dm.name}</h4>

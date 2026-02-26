@@ -3,13 +3,13 @@
 :root {
   /* Light Palette */
   --text: #091b0f;
-  --background: #f7fdf9;
+  --background: #f0f3f1;
   --primary: #008533;
   --secondary: #7af0a7;
   --accent: #00eeff;
-  
+
   /* Derived Variations (Light) */
-  --surface: #ffffff;
+  --surface: #f7fdf9;
   --surface-variant: #e1e5df;
   --border-subtle: #e4f0e7;
   --primary-muted: #e6f7ed;
@@ -19,17 +19,17 @@
 .dark {
   /* Dark Palette */
   --text: #e4f6ea;
-  --background: #020804;
+  --background: #0a140d;
   --primary: #7affad;
   --secondary: #0f853c;
   --accent: #00eeff;
-  
+
   /* Derived Variations (Dark) */
-  --surface: #0a140d;
+  --surface: #020804;
   --surface-variant: #1a261d;
   --border-subtle: #142117;
   --primary-muted: #083319;
-  --shadow: rgba(0, 0, 0, 0.5);
+  --shadow: rgba(255, 255, 255, 0.05);
 }
 
 @layer base {
@@ -38,7 +38,12 @@
     font-family: 'Outfit', sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Dongle', sans-serif;
     @apply font-bold leading-none uppercase tracking-wide;
   }
@@ -48,7 +53,7 @@
   .glass-card {
     @apply bg-surface/80 backdrop-blur-md border border-border-subtle shadow-xl transition-all;
   }
-  
+
   .btn-primary {
     @apply bg-primary text-background font-bold px-6 py-3 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-lg;
   }
