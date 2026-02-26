@@ -659,7 +659,7 @@ const App: React.FC = () => {
               <div className="flex gap-4 pt-4">
                 <button onClick={() => setPendingSchedule(null)} className="flex-1 py-4 font-bold text-text/50 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-2xl transition-all">Cancelar</button>
                 <button onClick={handleConfirmSelection} className="flex-[2] py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 hover:scale-[1.06] transition-all shadow-lg flex items-center justify-center gap-2">
-                  <span className="material-symbols-rounded">check_circle</span> CONFIRMAR
+                  <span className="material-symbols-rounded">task_alt</span> CONFIRMAR
                 </button>
               </div>
             </div>
@@ -766,7 +766,7 @@ const App: React.FC = () => {
                 onClick={() => setSearchQuery({ origin: '', destination: '' })}
                 className="flex items-center gap-1 text-xs font-black text-primary hover:text-primary/70 transition-colors mb-2"
               >
-                <span className="material-symbols-rounded text-sm">restart_alt</span>
+                <span className="material-symbols-rounded text-md">restart_alt</span>
                 REINICIAR
               </button>
             )}
@@ -854,63 +854,6 @@ const App: React.FC = () => {
         <div className="space-y-12 animate-fade-in pb-24">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 className="text-3xl font-black dark:text-white">Panel de Gestión</h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-surface rounded-[2.5rem] p-10 shadow-xl border border-border-subtle space-y-8 transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-rounded text-primary text-3xl">notifications</span>
-                  <h3 className="text-xl font-black dark:text-white">Novedades</h3>
-                </div>
-                <span className="px-3 py-1 bg-primary/10 text-primary text-[12px] font-black rounded-full uppercase">{news.length}</span>
-              </div>
-              <form onSubmit={handleAddNewsAdmin} className="space-y-4">
-                <textarea name="message" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Mensaje para los usuarios..."></textarea>
-                <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-xl hover:scale-105 transition-all">AÑADIR AVISO</button>
-              </form>
-              <div className="space-y-3">
-                {news.map(n => (
-                  <div key={n.id} className="p-4 bg-background rounded-2xl flex items-center justify-between group transition-colors">
-                    <p className="text-sm font-medium dark:text-slate-200 line-clamp-1 flex-1 pr-4">{n.message}</p>
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                      <button onClick={() => handleEditNews(n)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-rounded">edit</span></button>
-                      <button onClick={() => handleDeleteNews(n.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-rounded">delete</span></button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-surface rounded-[2.5rem] p-10 shadow-xl border border-border-subtle space-y-8 transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-rounded text-primary text-3xl">campaign</span>
-                  <h3 className="text-xl font-black">Publicidad</h3>
-                </div>
-                <span className="px-3 py-1 bg-primary/10 text-primary text-[12px] font-black rounded-full uppercase">{ads.length}</span>
-              </div>
-              <form onSubmit={handleAddAdAdmin} className="space-y-4">
-                <input name="title" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Título anuncio" />
-                <input name="description" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Descripción breve" />
-                <input name="image_url" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="URL de la imagen" />
-                <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-xl hover:scale-105 transition-all">NUEVO ANUNCIO</button>
-              </form>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {ads.map(ad => (
-                  <div key={ad.id} className="p-3 bg-background rounded-2xl flex items-center justify-between group transition-colors">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <img src={ad.image_url} className="size-8 rounded-lg object-cover" />
-                      <p className="text-xs font-bold text-text/80 truncate">{ad.title}</p>
-                    </div>
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEditAd(ad)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-rounded text-sm">edit</span></button>
-                      <button onClick={() => handleDeleteAd(ad.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-rounded text-sm">delete</span></button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Rutas y Frecuencias Management */}
@@ -1046,7 +989,7 @@ const App: React.FC = () => {
             {/* Sección de Métodos de Pago */}
             <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
               <h3 className="text-xl font-black mb-6 flex items-center gap-2">
-                <span className="material-symbols-rounded text-primary">payments</span> Pagos
+                <span className="material-symbols-rounded text-primary">transit_ticket</span> Pagos
               </h3>
               <form onSubmit={handleAddPaymentMethodAdmin} className="space-y-4 mb-6">
                 <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre" />
@@ -1068,7 +1011,7 @@ const App: React.FC = () => {
             {/* Sección de Empresas */}
             <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
               <h3 className="text-xl font-black mb-6 flex items-center gap-2">
-                <span className="material-symbols-rounded text-primary">business</span> Empresas
+                <span className="material-symbols-rounded text-primary">directions_bus</span> Empresas
               </h3>
               <form onSubmit={handleAddCompanyAdmin} className="space-y-4 mb-6">
                 <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre Empresa" />
@@ -1088,6 +1031,64 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-surface rounded-[2.5rem] p-10 shadow-xl border border-border-subtle space-y-8 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-rounded text-primary text-3xl">notifications</span>
+                  <h3 className="text-xl font-black dark:text-white">Novedades</h3>
+                </div>
+                <span className="px-3 py-1 bg-primary/10 text-primary text-[12px] font-black rounded-full uppercase">{news.length}</span>
+              </div>
+              <form onSubmit={handleAddNewsAdmin} className="space-y-4">
+                <textarea name="message" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Mensaje para los usuarios..."></textarea>
+                <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-xl hover:scale-105 transition-all">AÑADIR AVISO</button>
+              </form>
+              <div className="space-y-3">
+                {news.map(n => (
+                  <div key={n.id} className="p-4 bg-background rounded-2xl flex items-center justify-between group transition-colors">
+                    <p className="text-sm font-medium dark:text-slate-200 line-clamp-1 flex-1 pr-4">{n.message}</p>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                      <button onClick={() => handleEditNews(n)} className="text-slate-400 hover:text-primary transition-colors"><span className="material-symbols-rounded">edit</span></button>
+                      <button onClick={() => handleDeleteNews(n.id)} className="text-slate-400 hover:text-red-500 transition-colors"><span className="material-symbols-rounded">delete</span></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-surface rounded-[2.5rem] p-10 shadow-xl border border-border-subtle space-y-8 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-rounded text-primary text-3xl">campaign</span>
+                  <h3 className="text-xl font-black">Publicidad</h3>
+                </div>
+                <span className="px-3 py-1 bg-primary/10 text-primary text-[12px] font-black rounded-full uppercase">{ads.length}</span>
+              </div>
+              <form onSubmit={handleAddAdAdmin} className="space-y-4">
+                <input name="title" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Título anuncio" />
+                <input name="description" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Descripción breve" />
+                <input name="image_url" required className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="URL de la imagen" />
+                <button type="submit" className="w-full py-4 bg-primary text-background font-black rounded-xl hover:scale-105 transition-all">NUEVO ANUNCIO</button>
+              </form>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {ads.map(ad => (
+                  <div key={ad.id} className="p-3 bg-background rounded-2xl flex items-center justify-between group transition-colors">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <img src={ad.image_url} className="size-8 rounded-lg object-cover" />
+                      <p className="text-xs font-bold text-text/80 truncate">{ad.title}</p>
+                    </div>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => handleEditAd(ad)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-rounded text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteAd(ad.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-rounded text-sm">delete</span></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
         </div>
       )}
 
@@ -1203,7 +1204,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <button onClick={() => { setAddingScheduleToRouteId(null); setEditingSchedule(null); }} className="flex-1 py-4 font-bold text-text/40 hover:bg-surface-variant rounded-2xl transition-all">Cerrar</button>
+              <button onClick={() => { setAddingScheduleToRouteId(null); setEditingSchedule(null); }} className="flex-1 py-4 font-bold text-text/40 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-2xl transition-all">Cerrar</button>
               <button onClick={handleAddSchedule} className="flex-[2] py-4 bg-primary text-background font-bold rounded-2xl shadow-xl hover:scale-105 transition-all">GUARDAR FRECUENCIA</button>
             </div>
           </div>

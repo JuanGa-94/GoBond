@@ -137,6 +137,16 @@ const Layout: React.FC<LayoutProps> = ({ children, user, activeTab, setActiveTab
       <main className="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full transition-colors">
         {children}
       </main>
+
+      <footer className="w-full py-6 px-6 border-t border-border-subtle bg-surface/50 transition-colors">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-text/40 text-[10px] font-bold uppercase tracking-widest">
+          <p>© {new Date().getFullYear()} GoBond! Interurbanos. Todos los derechos reservados.</p>
+          <div className="flex gap-6">
+            <span className="hover:text-primary transition-colors cursor-pointer">Términos y condiciones</span>
+            <span className="hover:text-primary transition-colors cursor-pointer">Privacidad</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
