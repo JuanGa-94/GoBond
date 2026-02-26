@@ -15,6 +15,7 @@ export interface User {
 export interface Company {
   id: string;
   name: string;
+  image_url?: string;
 }
 
 export interface PaymentMethod {

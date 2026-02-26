@@ -62,22 +62,24 @@ const Layout: React.FC<LayoutProps> = ({ children, user, activeTab, setActiveTab
             <span className="font-bold text-sm">Mi Perfil</span>
           </button>
 
-          <>
-            <button
-              onClick={() => setActiveTab('admin')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'admin' ? 'bg-primary text-background shadow-lg' : 'text-slate-500 hover:bg-primary/10 hover:text-primary'}`}
-            >
-              <span className="material-symbols-rounded" style={{ fontVariationSettings: `'FILL' ${activeTab === 'admin' ? 1 : 0}` }}>settings</span>
-              <span className="font-bold text-sm">Administración</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('metrics')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'metrics' ? 'bg-primary text-background shadow-lg' : 'text-slate-500 hover:bg-primary/10 hover:text-primary'}`}
-            >
-              <span className="material-symbols-rounded" style={{ fontVariationSettings: `'FILL' ${activeTab === 'metrics' ? 1 : 0}` }}>monitoring</span>
-              <span className="font-bold text-sm">Métricas</span>
-            </button>
-          </>
+          {user.role === UserRole.ADMIN && (
+            <>
+              <button
+                onClick={() => setActiveTab('admin')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'admin' ? 'bg-primary text-background shadow-lg' : 'text-slate-500 hover:bg-primary/10 hover:text-primary'}`}
+              >
+                <span className="material-symbols-rounded" style={{ fontVariationSettings: `'FILL' ${activeTab === 'admin' ? 1 : 0}` }}>settings</span>
+                <span className="font-bold text-sm">Administración</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('metrics')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'metrics' ? 'bg-primary text-background shadow-lg' : 'text-slate-500 hover:bg-primary/10 hover:text-primary'}`}
+              >
+                <span className="material-symbols-rounded" style={{ fontVariationSettings: `'FILL' ${activeTab === 'metrics' ? 1 : 0}` }}>monitoring</span>
+                <span className="font-bold text-sm">Métricas</span>
+              </button>
+            </>
+          )}
         </nav>
 
         <div className="mt-auto pt-6 border-t border-border-subtle space-y-4">

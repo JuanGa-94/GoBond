@@ -488,8 +488,9 @@ const App: React.FC = () => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const name = fd.get('name') as string;
+    const image_url = fd.get('image_url') as string;
     if (name) {
-      await supabase.addCompany(name);
+      await supabase.addCompany(name, image_url);
       loadData();
       e.currentTarget.reset();
     }
@@ -575,8 +576,8 @@ const App: React.FC = () => {
           ) : authView === 'login' ? (
             <form onSubmit={handleLogin} className="space-y-6 animate-fade-in">
               <div className="space-y-4">
-                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Correo electrónico" />
-                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Contraseña" />
+                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant border-none outline-none focus:ring-2 focus:ring-primary text-text/60 font-medium" placeholder="Correo electrónico" />
+                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant border-none outline-none focus:ring-2 focus:ring-primary text-text/60 font-medium" placeholder="Contraseña" />
               </div>
               <button type="submit" className="w-full py-4 bg-primary text-background font-bold rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all">ACCEDER</button>
               <button type="button" onClick={() => setAuthView('landing')} className="w-full py-2 text-text/40 font-bold text-sm hover:text-text transition-colors">Regresar</button>
@@ -584,10 +585,10 @@ const App: React.FC = () => {
           ) : (
             <form onSubmit={handleRegister} className="space-y-6 animate-fade-in">
               <div className="space-y-4">
-                <input type="text" required value={authForm.name} onChange={e => setAuthForm({ ...authForm, name: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Nombre completo" />
-                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Email" />
-                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Contraseña" />
-                <input type="password" required value={authForm.confirmPassword} onChange={e => setAuthForm({ ...authForm, confirmPassword: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant/30 border-none outline-none focus:ring-2 focus:ring-primary text-text font-medium" placeholder="Confirmar contraseña" />
+                <input type="text" required value={authForm.name} onChange={e => setAuthForm({ ...authForm, name: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant border-none outline-none focus:ring-2 focus:ring-primary text-surface font-medium" placeholder="Nombre completo" />
+                <input type="email" required value={authForm.email} onChange={e => setAuthForm({ ...authForm, email: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant border-none outline-none focus:ring-2 focus:ring-primary text-surface font-medium" placeholder="Email" />
+                <input type="password" required value={authForm.password} onChange={e => setAuthForm({ ...authForm, password: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant border-none outline-none focus:ring-2 focus:ring-primary text-surface font-medium" placeholder="Contraseña" />
+                <input type="password" required value={authForm.confirmPassword} onChange={e => setAuthForm({ ...authForm, confirmPassword: e.target.value })} className="w-full p-4 rounded-xl bg-surface-variant border-none outline-none focus:ring-2 focus:ring-primary text-surface font-medium" placeholder="Confirmar contraseña" />
               </div>
               <button type="submit" className="w-full py-4 bg-primary text-background font-bold rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all">REGISTRARSE</button>
               <button type="button" onClick={() => setAuthView('landing')} className="w-full py-2 text-text/40 font-bold text-sm hover:text-text transition-colors">Regresar</button>
@@ -613,6 +614,16 @@ const App: React.FC = () => {
                 </div>
                 <button onClick={() => setPendingSchedule(null)} className="size-10 rounded-full bg-surface-variant flex items-center justify-center text-text/40 hover:text-text/60 transition-all"><span className="material-symbols-rounded">close</span></button>
               </div>
+
+              {/* Company Image */}
+              {(() => {
+                const company = companies.find(c => c.name === pendingSchedule.route.company);
+                return company?.image_url ? (
+                  <div className="aspect-[29/9] w-full rounded-2xl overflow-hidden border border-border-subtle bg-surface-variant/30">
+                    <img src={company.image_url} className="w-full h-full object-cover" alt={company.name} />
+                  </div>
+                ) : null;
+              })()}
 
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 bg-background p-6 rounded-2xl border border-border-subtle">
                 <div className="space-y-1">
@@ -660,6 +671,11 @@ const App: React.FC = () => {
       {activeTab === 'home' && (
         <div className="space-y-12 animate-fade-in pb-20">
 
+          <section className="space-y-2">
+            <h1 className="text-4xl font-bold tracking-tight">Hola, {user.name || 'Viajero'} !! 😊</h1>
+            <p className="text-slate-500 text-lg font-medium">Servicios interurbanos en un solo lugar</p>
+          </section>
+
           {activeSelection && (
             <div className="space-y-6">
               <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest w-fit">
@@ -692,11 +708,6 @@ const App: React.FC = () => {
               </div>
             </div>
           )}
-
-          <section className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight">Hola, {user.name || 'Viajero'} !! 😊</h1>
-            <p className="text-slate-500 text-lg font-medium">Servicios interurbanos en un solo lugar</p>
-          </section>
 
           {/* Quick Search transitioning to Search Tab */}
           <div className="bg-surface rounded-[2.5rem] p-8 shadow-2xl border border-border-subtle transition-colors">
@@ -839,7 +850,7 @@ const App: React.FC = () => {
       )}
 
       {/* ADMIN TAB */}
-      {activeTab === 'admin' && (
+      {activeTab === 'admin' && user.role === UserRole.ADMIN && (
         <div className="space-y-12 animate-fade-in pb-24">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 className="text-3xl font-black dark:text-white">Panel de Gestión</h2>
@@ -1061,6 +1072,7 @@ const App: React.FC = () => {
               </h3>
               <form onSubmit={handleAddCompanyAdmin} className="space-y-4 mb-6">
                 <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre Empresa" />
+                <input name="image_url" className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="URL Imagen (4:3)" />
                 <button type="submit" className="w-full py-3 bg-primary text-background font-black rounded-xl hover:scale-[1.02] transition-all">REGISTRAR</button>
               </form>
               <div className="space-y-2">
@@ -1080,7 +1092,7 @@ const App: React.FC = () => {
       )}
 
       {/* METRICAS TAB */}
-      {activeTab === 'metrics' && (
+      {activeTab === 'metrics' && user.role === UserRole.ADMIN && (
         <div className="space-y-12 animate-fade-in pb-24">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 className="text-3xl font-black dark:text-white">Métricas de Uso</h2>

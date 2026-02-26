@@ -308,8 +308,8 @@ class SupabaseService {
 
   // ─── COMPANIES CRUD ───────────────────────────────────
 
-  async addCompany(name: string): Promise<Company> {
-    const { data, error } = await supabaseClient.from('companies').insert({ name }).select().single();
+  async addCompany(name: string, image_url?: string): Promise<Company> {
+    const { data, error } = await supabaseClient.from('companies').insert({ name, image_url }).select().single();
     if (error) throw new Error(error.message);
     return data as Company;
   }
