@@ -30,11 +30,17 @@ export interface Route {
   company: string;
   line: string;
   show_line: boolean;
-  route_name: string;
+  route_name?: string; // Optional: phasing out for connection level
   payment_methods: string[];
   is_special: boolean;
   special_reason?: string;
   price: number;
+}
+
+export interface AvailableRoute {
+  id: string;
+  name: string;
+  created_at?: string;
 }
 
 export interface Schedule {
@@ -44,6 +50,7 @@ export interface Schedule {
   arrival_time: string;   // HH:mm
   operating_days: string[]; // ['0'..'6', 'H'] 0=Sun, H=Holiday
   platform?: string;
+  route_name?: string; // Centralized route path
 }
 
 export interface Ad {

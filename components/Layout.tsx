@@ -24,7 +24,11 @@ const Layout: React.FC<LayoutProps> = ({ children, user, activeTab, setActiveTab
           <div className="bg-primary rounded-lg p-2 text-background flex items-center justify-center shadow-lg shadow-primary/20">
             <GobondIcon className="w-10 h-10" />          </div>
           <div>
-            <h1 className="text-4xl text-primary font-bold tracking-tight normal-case">GoBond!</h1>
+            <h1 className="text-4xl text-primary font-bold tracking-tight normal-case">
+              <span className="text-[var(--primary)]">Go</span>
+              <span className="text-[var(--text)]">Bond</span>
+              <span className="text-[var(--primary)]">!</span>
+            </h1>
             <p className="text-text text-[11px] font-bold uppercase tracking-widest leading-none">Interurbanos</p>
           </div>
         </div>

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from './services/supabase';
-import { User, Route, Schedule, Announcement, UserRole, Company, PaymentMethod, Ad, DonationMethod, NewsItem } from './types';
+import { User, Route, Schedule, Announcement, UserRole, Company, PaymentMethod, Ad, DonationMethod, NewsItem, AvailableRoute } from './types';
 import Layout from './components/Layout';
 import CountdownTimer from './components/CountdownTimer';
 import { analytics } from './services/analytics';
@@ -21,7 +21,7 @@ const GobondIcon = ({ className }: { className?: string }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M193.872 39C193.872 39 192.947 69.2451 221.633 69.2451C250.318 69.2449 250.318 39 250.318 39H296.647C324.225 39.0002 346.596 61.3294 346.647 88.9072L346.674 103.389H317.205C313.063 103.389 309.705 106.747 309.705 110.889C309.705 115.031 313.063 118.389 317.205 118.389H346.666L346.555 157.636L347.352 388.689V425C347.352 452.614 324.966 475 297.352 475H149C121.386 475 99 452.614 99 425V118.389H132.135C136.277 118.389 139.635 115.031 139.635 110.889C139.635 106.747 136.277 103.389 132.135 103.389H99.0693L99.2061 88.5381C99.4595 61.1052 121.77 39 149.204 39H193.872ZM191.801 425.487C188.435 425.487 185.482 427.729 184.577 430.971C183.672 434.213 185.038 437.66 187.917 439.403L219.535 458.542C221.903 459.976 224.869 459.988 227.249 458.574L259.469 439.436C262.372 437.711 263.765 434.258 262.871 431.001C261.977 427.744 259.016 425.487 255.639 425.487H191.801ZM194.134 103.389C189.992 103.389 186.634 106.747 186.634 110.889C186.634 115.031 189.992 118.389 194.134 118.389H255.206C259.348 118.389 262.706 115.031 262.706 110.889C262.706 106.747 259.348 103.389 255.206 103.389H194.134Z" fill="var(--primary)" />
+    <path fillRule="evenodd" clipRule="evenodd" d="M193.872 39C193.872 39 192.947 69.2451 221.633 69.2451C250.318 69.2449 250.318 39 250.318 39H296.647C324.225 39.0002 346.596 61.3294 346.647 88.9072L346.674 103.389H317.205C313.063 103.389 309.705 106.747 309.705 110.889C309.705 115.031 313.063 118.389 317.205 118.389H346.666L346.555 157.636L347.352 388.689V425C347.352 452.614 324.966 475 297.352 475H149C121.386 475 99 452.614 99 425V118.389H132.135C136.277 118.389 139.635 115.031 139.635 110.889C139.635 106.747 136.277 103.389 132.135 103.389H99.0693L99.2061 88.5381C99.4595 61.1052 121.77 39 149.204 39H193.872ZM191.801 425.487C188.435 425.487 185.482 427.729 184.577 430.971C183.672 434.213 185.038 437.66 187.917 439.403L219.535 458.542C221.903 459.976 224.869 459.988 227.249 458.574L259.469 439.436C262.372 437.711 263.765 434.258 262.871 431.001C261.977 427.744 259.016 425.487 255.639 425.487H191.801ZM194.134 103.389C189.992 103.389 186.634 106.747 186.634 110.889C186.634 115.031 189.992 118.389 194.134 118.389H255.206C259.348 118.389 262.706 115.031 262.706 110.889C262.706 106.747 259.348 103.389 255.206 103.389H194.134Z" fill="var(--primary)" />
     <path d="M284.062 141.698C341.991 141.698 391.134 179.531 408.394 231.969C412.68 244.991 415 258.914 415 273.382C415 287.85 412.68 301.773 408.394 314.795C391.134 367.233 341.991 405.066 284.062 405.066C226.477 405.066 177.574 367.68 160.042 315.726C155.558 302.437 153.126 288.195 153.126 273.382C153.126 258.569 155.558 244.327 160.042 231.038C177.574 179.084 226.477 141.698 284.062 141.698Z" fill="var(--secondary)" />
     <path d="M311.898 234.428C314.825 231.498 319.574 231.494 322.505 234.421C325.435 237.348 325.438 242.097 322.512 245.028L294.513 273.065L352.011 334.012C354.853 337.025 354.714 341.771 351.701 344.614C348.688 347.456 343.942 347.318 341.1 344.305L278.607 278.063L273.611 272.768L278.756 267.617L311.898 234.428Z" fill="var(--primary)" />
 
@@ -39,6 +39,7 @@ const App: React.FC = () => {
   const [donationMethods, setDonationMethods] = useState<DonationMethod[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [availableRoutes, setAvailableRoutes] = useState<AvailableRoute[]>([]);
   const [activeSelection, setActiveSelection] = useState<{ route: Route, schedule: Schedule, targetDate: Date } | null>(null);
   const [searchQuery, setSearchQuery] = useState({ origin: '', destination: '' });
 
@@ -67,7 +68,7 @@ const App: React.FC = () => {
 
   // --- Admin Route Form ---
   const [routeForm, setRouteForm] = useState<Omit<Route, 'id'>>({
-    origin: '', destination: '', company: '', route_name: '', line: '', show_line: true, price: 0, payment_methods: [], is_special: false, special_reason: ''
+    origin: '', destination: '', company: '', line: '', show_line: true, price: 0, payment_methods: [], is_special: false, special_reason: ''
   });
   const [createReturnRoute, setCreateReturnRoute] = useState(false);
   const [editingRouteId, setEditingRouteId] = useState<string | null>(null);
@@ -111,14 +112,15 @@ const App: React.FC = () => {
 
   const loadData = useCallback(async () => {
     try {
-      const [r, s, c, p, a, d, n] = await Promise.all([
+      const [r, s, c, p, a, d, n, av] = await Promise.all([
         supabase.getRoutes(),
         supabase.getSchedules(),
         supabase.getCompanies(),
         supabase.getPaymentMethods(),
         supabase.getAds(),
         supabase.getDonationMethods(),
-        supabase.getNews()
+        supabase.getNews(),
+        supabase.getAvailableRoutes()
       ]);
       setRoutes(r);
       setSchedules(s);
@@ -127,6 +129,7 @@ const App: React.FC = () => {
       setAds(a);
       setDonationMethods(d);
       setNews(n);
+      setAvailableRoutes(av);
 
       if (user) {
         const selection = await supabase.getActiveSelection(user.id);
@@ -316,7 +319,7 @@ const App: React.FC = () => {
         }
         alert("Ruta creada");
       }
-      setRouteForm({ origin: '', destination: '', company: '', route_name: '', line: '', show_line: true, price: 0, payment_methods: [], is_special: false, special_reason: '' });
+      setRouteForm({ origin: '', destination: '', company: '', line: '', show_line: true, price: 0, payment_methods: [], is_special: false, special_reason: '' });
       setCreateReturnRoute(false);
       setEditingRouteId(null);
       loadData();
@@ -331,7 +334,6 @@ const App: React.FC = () => {
       origin: r.origin,
       destination: r.destination,
       company: r.company,
-      route_name: r.route_name,
       line: r.line,
       show_line: r.show_line,
       price: r.price,
@@ -345,7 +347,7 @@ const App: React.FC = () => {
 
   const cancelEditRoute = () => {
     setEditingRouteId(null);
-    setRouteForm({ origin: '', destination: '', company: '', route_name: '', line: '', show_line: true, price: 0, payment_methods: [], is_special: false, special_reason: '' });
+    setRouteForm({ origin: '', destination: '', company: '', line: '', show_line: true, price: 0, payment_methods: [], is_special: false, special_reason: '' });
     setCreateReturnRoute(false);
   };
 
@@ -511,6 +513,32 @@ const App: React.FC = () => {
     }
   };
 
+  const handleAddAvailableRouteAdmin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const name = fd.get('name') as string;
+    if (name) {
+      await supabase.addAvailableRoute(name);
+      loadData();
+      e.currentTarget.reset();
+    }
+  };
+
+  const handleEditAvailableRoute = async (ar: AvailableRoute) => {
+    const newName = prompt('Nombre de la ruta:', ar.name);
+    if (newName) {
+      await supabase.updateAvailableRoute(ar.id, newName);
+      loadData();
+    }
+  };
+
+  const handleDeleteAvailableRoute = async (id: string) => {
+    if (confirm('¿Eliminar esta ruta?')) {
+      await supabase.deleteAvailableRoute(id);
+      loadData();
+    }
+  };
+
   const handlePresetDays = (type: 'lv' | 'fs' | 'fer' | 'all') => {
     if (!editingSchedule) return;
     let days: string[] = [];
@@ -610,7 +638,7 @@ const App: React.FC = () => {
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <p className="text-[10px] font-bold uppercase text-primary tracking-widest">{pendingSchedule.route.company}</p>
-                  <h3 className="text-2xl font-bold">{pendingSchedule.route.route_name}</h3>
+                  <h3 className="text-2xl font-bold">{pendingSchedule.route_name || pendingSchedule.route.route_name}</h3>
                 </div>
                 <button onClick={() => setPendingSchedule(null)} className="size-10 rounded-full bg-surface-variant flex items-center justify-center text-text/40 hover:text-text/60 transition-all"><span className="material-symbols-rounded">close</span></button>
               </div>
@@ -689,7 +717,7 @@ const App: React.FC = () => {
                 <div className="flex justify-between items-center mb-8">
                   <div>
                     <h3 className="text-2xl font-bold">{activeSelection.route.origin} → {activeSelection.route.destination}</h3>
-                    <p className="text-text/50 font-medium">{activeSelection.route.company} • {activeSelection.route.route_name}</p>
+                    <p className="text-text/50 font-medium">{activeSelection.route.company} • {activeSelection.schedule.route_name || activeSelection.route.route_name}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">Salida</p>
@@ -702,7 +730,7 @@ const App: React.FC = () => {
                     <span className="material-symbols-rounded">cancel</span> CANCELAR
                   </button>
                   <button onClick={handleBoardedBus} className="py-4 bg-primary text-background font-bold rounded-2xl hover:bg-primary/90 hover:scale-[1.04] transition-all flex items-center justify-center gap-2 shadow-lg">
-                    <span class="material-symbols-rounded">check_circle_unread</span> YA ESTOY EN EL BUS
+                    <span className="material-symbols-rounded">check_circle_unread</span> YA ESTOY EN EL BUS
                   </button>
                 </div>
               </div>
@@ -764,7 +792,7 @@ const App: React.FC = () => {
             {(searchQuery.origin || searchQuery.destination) && (
               <button
                 onClick={() => setSearchQuery({ origin: '', destination: '' })}
-                className="flex items-center gap-1 text-xs font-black text-primary hover:text-primary/70 transition-colors mb-2"
+                className="flex items-center gap-1 text-xs font-black text-primary hover:scale-[1.02] hover:text-primary/70 transition-colors mb-2"
               >
                 <span className="material-symbols-rounded text-md">restart_alt</span>
                 REINICIAR
@@ -830,7 +858,7 @@ const App: React.FC = () => {
                     <div className="flex items-center gap-8">
                       <div className="text-5xl font-bold text-primary tabular-nums">{item.departure_time}</div>
                       <div>
-                        <p className="text-xl font-bold">{item.route.route_name}</p>
+                        <p className="text-xl font-bold">{item.route_name || item.route.route_name}</p>
                         <p className="text-[10px] text-text/40 font-bold uppercase">{item.route.company}</p>
                       </div>
                     </div>
@@ -879,7 +907,6 @@ const App: React.FC = () => {
                   <option value="">Seleccionar Empresa</option>
                   {companies.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                 </select>
-                <input required value={routeForm.route_name} onChange={e => setRouteForm({ ...routeForm, route_name: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Ruta..." />
                 <input type="number" step="0.01" required value={routeForm.price} onChange={e => setRouteForm({ ...routeForm, price: Number(e.target.value) })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Precio" />
 
                 <div className="space-y-3">
@@ -930,7 +957,7 @@ const App: React.FC = () => {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="font-black text-lg">{r.origin} → {r.destination}</p>
-                        <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">{r.company} • {r.route_name}</p>
+                        <p className="text-[10px] font-bold text-text/40 uppercase tracking-widest">{r.company}</p>
                       </div>
                       <div className="flex gap-2">
                         <button onClick={() => { setAddingScheduleToRouteId(r.id); setEditingSchedule({ id: '', route_id: r.id, departure_time: '08:00', arrival_time: '09:00', operating_days: ['1', '2', '3', '4', '5'] }); }} className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-background transition-all shadow-sm">
@@ -948,7 +975,10 @@ const App: React.FC = () => {
                     <div className="flex flex-wrap gap-2">
                       {schedules.filter(s => s.route_id === r.id).sort((a, b) => a.departure_time.localeCompare(b.departure_time)).map(s => (
                         <div key={s.id} className="px-4 py-2 bg-surface rounded-xl flex items-center gap-3 shadow-sm border border-border-subtle">
-                          <span className="text-sm font-black text-primary tabular-nums">{s.departure_time}</span>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-black text-primary tabular-nums">{s.departure_time}</span>
+                            {s.route_name && <span className="text-[8px] font-bold text-text/40 truncate max-w-[60px]">{s.route_name}</span>}
+                          </div>
                           <button onClick={() => handleDeleteScheduleAdmin(s.id)} className="text-text/20 hover:text-red-500 transition-colors">
                             <span className="material-symbols-rounded text-[16px]">close</span>
                           </button>
@@ -961,8 +991,30 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Colaboración, Pagos & Empresas */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10">
+          {/* Rutas, Colaboración, Pagos & Empresas */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10">
+            {/* Sección de Rutas Centralizadas */}
+            <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
+              <h3 className="text-xl font-black mb-6 flex items-center gap-2">
+                <span className="material-symbols-rounded text-primary">alt_route</span> Rutas
+              </h3>
+              <form onSubmit={handleAddAvailableRouteAdmin} className="space-y-4 mb-6">
+                <input name="name" required className="w-full p-3 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" placeholder="Nombre Ruta (ej. Ruta 6)" />
+                <button type="submit" className="w-full py-3 bg-primary text-background font-black rounded-xl hover:scale-[1.02] transition-all">AÑADIR</button>
+              </form>
+              <div className="space-y-2 max-h-[200px] overflow-y-auto pr-2 no-scrollbar">
+                {availableRoutes.map(ar => (
+                  <div key={ar.id} className="flex items-center justify-between p-3 bg-background rounded-xl group transition-colors">
+                    <span className="text-sm font-bold truncate max-w-[120px]">{ar.name}</span>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => handleEditAvailableRoute(ar)} className="text-text/40 hover:text-primary transition-colors"><span className="material-symbols-rounded text-sm">edit</span></button>
+                      <button onClick={() => handleDeleteAvailableRoute(ar.id)} className="text-text/40 hover:text-red-500 transition-colors"><span className="material-symbols-rounded text-sm">delete</span></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Sección de Colaboraciones */}
             <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
               <h3 className="text-xl font-black mb-6 flex items-center gap-2">
@@ -1181,6 +1233,14 @@ const App: React.FC = () => {
                 <label className="text-[10px] font-black uppercase text-primary tracking-widest px-1">Hora Llegada</label>
                 <input type="time" value={editingSchedule.arrival_time} onChange={e => setEditingSchedule({ ...editingSchedule, arrival_time: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary" />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase text-primary tracking-widest px-1">Ruta Asociada</label>
+              <select value={editingSchedule.route_name || ''} onChange={e => setEditingSchedule({ ...editingSchedule, route_name: e.target.value })} className="w-full p-4 rounded-xl bg-background text-text border-none focus:ring-2 focus:ring-primary cursor-pointer">
+                <option value="">Seleccionar Ruta (Opcional)</option>
+                {availableRoutes.map(ar => <option key={ar.id} value={ar.name}>{ar.name}</option>)}
+              </select>
             </div>
 
             <div className="space-y-4">

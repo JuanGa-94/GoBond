@@ -1,6 +1,6 @@
 
 import { createClient } from '@supabase/supabase-js';
-import { Route, Schedule, User, UserRole, Ad, DonationMethod, NewsItem, Company, PaymentMethod } from '../types';
+import { Route, Schedule, User, UserRole, Ad, DonationMethod, NewsItem, Company, PaymentMethod, AvailableRoute } from '../types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -126,6 +126,12 @@ class SupabaseService {
     const { data, error } = await supabaseClient.from('payment_methods').select('*').order('name');
     if (error) throw new Error(error.message);
     return (data ?? []) as PaymentMethod[];
+  }
+
+  async getAvailableRoutes(): Promise<AvailableRoute[]> {
+    const { data, error } = await supabaseClient.from('available_routes').select('*').order('name');
+    if (error) throw new Error(error.message);
+    return (data ?? []) as AvailableRoute[];
   }
 
   // ─── ACTIVE SELECTIONS ────────────────────────────────
@@ -321,6 +327,24 @@ class SupabaseService {
 
   async deleteCompany(id: string): Promise<void> {
     const { error } = await supabaseClient.from('companies').delete().eq('id', id);
+    if (error) throw new Error(error.message);
+  }
+
+  // ─── AVAILABLE ROUTES CRUD ────────────────────────────
+
+  async addAvailableRoute(name: string): Promise<AvailableRoute> {
+    const { data, error } = await supabaseClient.from('available_routes').insert({ name }).select().single();
+    if (error) throw new Error(error.message);
+    return data as AvailableRoute;
+  }
+
+  async updateAvailableRoute(id: string, name: string): Promise<void> {
+    const { error } = await supabaseClient.from('available_routes').update({ name }).eq('id', id);
+    if (error) throw new Error(error.message);
+  }
+
+  async deleteAvailableRoute(id: string): Promise<void> {
+    const { error } = await supabaseClient.from('available_routes').delete().eq('id', id);
     if (error) throw new Error(error.message);
   }
 }
