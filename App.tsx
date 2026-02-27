@@ -992,7 +992,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Rutas, Colaboración, Pagos & Empresas */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-10">
             {/* Sección de Rutas Centralizadas */}
             <div className="bg-surface rounded-[2.5rem] p-8 shadow-xl border border-border-subtle transition-colors">
               <h3 className="text-xl font-black mb-6 flex items-center gap-2">
@@ -1194,7 +1194,7 @@ const App: React.FC = () => {
         <div className="space-y-12 animate-fade-in pb-20">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-black dark:text-white">Colaboración</h2>
-            <p className="text-slate-500 text-lg font-medium mt-2">Apoya el mantenimiento de TwBond.</p>
+            <p className="text-slate-500 text-lg font-medium mt-2">Apoya el mantenimiento de GoBond!</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="p-10 bg-surface rounded-[3rem] shadow-xl border border-border-subtle flex flex-col items-center text-center transition-colors">
@@ -1205,8 +1205,8 @@ const App: React.FC = () => {
             <div className="space-y-4">
               {donationMethods.map(dm => (
                 <a key={dm.id} href={dm.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 p-6 bg-surface rounded-3xl border border-border-subtle hover:shadow-xl transition-all group transition-colors">
-                  <div className="size-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
-                    <span className="material-symbols-rounded text-3xl">{dm.icon || 'payments'}</span>
+                  <div className="size-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-gradient-to-br from-primary to-green-600 group-hover:text-background transition-all">
+                    <span className="material-symbols-rounded text-3xl">{dm.icon || 'emoji_food_beverage'}</span>
                   </div>
                   <div className="flex-1">
                     <h4 className="font-black dark:text-white text-lg">{dm.name}</h4>
@@ -1214,6 +1214,37 @@ const App: React.FC = () => {
                   </div>
                 </a>
               ))}
+            </div>
+          </div>
+
+          {/* NOWPayments Crypto Donation Widget */}
+          <div className="bg-surface rounded-[3rem] shadow-xl border border-border-subtle overflow-hidden transition-colors">
+            <div className="p-8 pb-0 flex items-center gap-4">
+              <div className="size-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg">
+                <span className="material-symbols-rounded text-3xl text-white">currency_bitcoin</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-black dark:text-white">Donar con Crypto</h3>
+                <p className="text-sm text-slate-500">Apoyá el proyecto con criptomonedas vía NOWPayments</p>
+              </div>
+            </div>
+            <div className="p-6">
+              <div className="rounded-2xl overflow-hidden border border-border-subtle bg-white">
+                <iframe
+                  id="nowpayments-donation-widget"
+                  src="https://nowpayments.io/donation?api_key=AA0VZ4M-9F0M4C4-G8J3ZGR-58KVG7J"
+                  width="100%"
+                  height="600"
+                  frameBorder="0"
+                  scrolling="no"
+                  style={{ border: 'none', overflow: 'hidden' }}
+                  title="Donación Crypto - NOWPayments"
+                  allow="payment"
+                />
+              </div>
+              <p className="text-center text-[10px] text-text/30 font-bold uppercase tracking-widest mt-4">
+                Pagos procesados de forma segura por NOWPayments.io
+              </p>
             </div>
           </div>
         </div>

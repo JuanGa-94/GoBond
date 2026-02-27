@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user, activeTab, setActiveTab
       {/* Sidebar Desktop */}
       <aside className="hidden md:flex flex-col fixed inset-y-0 left-0 w-64 border-r border-border-subtle bg-surface p-6 z-40 transition-colors">
         <div className="flex items-center gap-3 mb-6">
-          <div className="bg-primary rounded-lg p-2 text-background flex items-center justify-center shadow-lg shadow-primary/20">
+          <div className="bg-gradient-to-br from-primary to-green-600 rounded-lg p-2 text-background flex items-center justify-center shadow-lg shadow-primary/20">
             <GobondIcon className="w-10 h-10" />          </div>
           <div>
             <h1 className="text-4xl text-primary font-bold tracking-tight normal-case">
