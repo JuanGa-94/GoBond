@@ -575,7 +575,7 @@ const App: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-background transition-colors">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-primary to-secondary transition-colors">
         <div className="w-full max-w-md bg-surface rounded-[2.5rem] shadow-2xl p-10 border border-border-subtle animate-slide-up transition-colors">
           <div className="flex flex-col items-center mb-10">
             <div className="p-4 rounded-2xl">
@@ -1205,7 +1205,7 @@ const App: React.FC = () => {
             <div className="space-y-4">
               {donationMethods.map(dm => (
                 <a key={dm.id} href={dm.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 p-6 bg-surface rounded-3xl border border-border-subtle hover:shadow-xl transition-all group transition-colors">
-                  <div className="size-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-gradient-to-br from-primary to-green-600 group-hover:text-background transition-all">
+                  <div className="size-16 shrink-0 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-gradient-to-br from-primary to-green-600 group-hover:text-background transition-all">
                     <span className="material-symbols-rounded text-3xl">{dm.icon || 'emoji_food_beverage'}</span>
                   </div>
                   <div className="flex-1">
@@ -1220,7 +1220,7 @@ const App: React.FC = () => {
           {/* NOWPayments Crypto Donation Widget */}
           <div className="bg-surface rounded-[3rem] shadow-xl border border-border-subtle overflow-hidden transition-colors">
             <div className="p-8 pb-0 flex items-center gap-4">
-              <div className="size-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg">
+              <div className="size-16 shrink-0 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg">
                 <span className="material-symbols-rounded text-3xl text-white">currency_bitcoin</span>
               </div>
               <div>
